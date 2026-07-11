@@ -1,11 +1,12 @@
 # Señor 808 Portfolio
 
-A static artist portfolio website for Señor 808, built to cleanly present visual artwork, media formats, and commission details.
+A one-page artist portfolio website for Señor 808, built to present visual artwork, selected collaboration formats, and a developing media direction through proof-honest public content.
 
 ## Tech Stack
 - **Framework:** React + Vite
 - **Language:** TypeScript
 - **Styling:** Tailwind CSS
+- **Deployment:** GitHub Actions + GitHub Pages
 
 ## Local Setup
 
@@ -27,7 +28,22 @@ npm run build
 The output will be in the `dist` directory.
 
 ## GitHub Pages Deployment
-This project is configured to safely deploy to GitHub Pages, either at a root domain or a repository subpath, using relative asset paths (`base: './'`).
 
-## Administration
-For instructions on how to update the portfolio grid and manage site content directly via GitHub without writing code, please refer to the [ADMIN_GUIDE.md](ADMIN_GUIDE.md).
+This project is configured to deploy to GitHub Pages from the `main` branch through GitHub Actions. The Vite base setting uses relative asset paths so the application can run from the current repository subpath.
+
+## Governance
+
+- Bry maintains the repository and deployment workflow.
+- Bob Garcia reviews the public experience and supplies approved artwork, titles, dates, categories, descriptions, and permissions.
+- Unverified claims, dates, partner names, and media proof remain unpublished until confirmed.
+- The current production repository is `workfolios/senor-808-portfolio`; a possible rename to `senor-808` remains undecided.
+
+See [SOURCE_GOVERNANCE.md](SOURCE_GOVERNANCE.md) for the canonical operating baseline.
+
+## Content Submission
+
+Bob does not need to edit GitHub. For the information and assets needed to update the website, see [CONTENT_SUBMISSION_GUIDE_FOR_BOB.md](CONTENT_SUBMISSION_GUIDE_FOR_BOB.md).
+
+## Technical Administration
+
+Repository maintenance instructions for Bry are retained in [ADMIN_GUIDE.md](ADMIN_GUIDE.md).
