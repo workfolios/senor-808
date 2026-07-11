@@ -14,8 +14,9 @@ The repository is governed by the following current-state decisions:
 - **Publishing Standard:** Proof-honest, permissioned, and verified
 - **Website Architecture:** One-page React/Vite portfolio deployed through GitHub Pages
 - **Content Maintenance:** Bry maintains the repository; Bob reviews and supplies approved content
-- **Current Repository:** `workfolios/senor-808-portfolio`
-- **Repository Rename:** Undecided
+- **Current Repository:** `workfolios/senor-808`
+- **Production URL:** `https://workfolios.github.io/senor-808/`
+- **Repository Rename:** Completed July 11, 2026
 - **Inquiry Form:** Prototype only until real delivery routing is connected and tested
 
 ## 2.0 Source Priority
@@ -28,7 +29,7 @@ When sources conflict, use this order:
 4. Approved artwork metadata and permissions supplied by Bob
 5. Educational primers and older planning documents, used only when consistent with the current baseline
 
-Older references to Denver, a strict 50/50 art-and-media model, an operational inquiry form, or a completed repository rename must not override the current baseline.
+Older references to Denver, a strict 50/50 art-and-media model, an operational inquiry form, or the former `senor-808-portfolio` repository path must not override the current baseline.
 
 ## 3.0 Proof-Honest Publishing Rules
 
@@ -46,6 +47,5 @@ Where information is unknown, omit it from the public interface or label it inte
 
 - Confirm the approved title, category, year, and public-use permission for each portfolio image.
 - Select and test a real inquiry-routing method before describing the form as operational.
-- Decide whether the repository should remain `senor-808-portfolio` or be renamed to `senor-808`.
 - Confirm the final public wording for the relationship between Bob’s work and late-20th-century Mexican modernism.
 - Complete visual browser and device QA after content and routing corrections are implemented.
