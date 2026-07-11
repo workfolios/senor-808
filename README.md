@@ -29,14 +29,17 @@ The output will be in the `dist` directory.
 
 ## GitHub Pages Deployment
 
-This project is configured to deploy to GitHub Pages from the `main` branch through GitHub Actions. The Vite base setting uses relative asset paths so the application can run from the current repository subpath.
+This project is configured to deploy to GitHub Pages from the `main` branch through GitHub Actions. The Vite base setting uses relative asset paths so the application can run from the repository subpath.
+
+- **Repository:** `workfolios/senor-808`
+- **Production URL:** `https://workfolios.github.io/senor-808/`
 
 ## Governance
 
 - Bry maintains the repository and deployment workflow.
 - Bob Garcia reviews the public experience and supplies approved artwork, titles, dates, categories, descriptions, and permissions.
 - Unverified claims, dates, partner names, and media proof remain unpublished until confirmed.
-- The current production repository is `workfolios/senor-808-portfolio`; a possible rename to `senor-808` remains undecided.
+- The repository rename from `senor-808-portfolio` to `senor-808` was completed on July 11, 2026.
 
 See [SOURCE_GOVERNANCE.md](SOURCE_GOVERNANCE.md) for the canonical operating baseline.
 
