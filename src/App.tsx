@@ -16,6 +16,16 @@ type Work = {
   wide?: boolean;
 };
 
+type InquiryState = {
+  fullName: string;
+  email: string;
+  location: string;
+  timeline: string;
+  budget: string;
+  referenceUrl: string;
+  details: string;
+};
+
 const steps = [
   { title: 'Discover', text: 'Clarify the project type, audience, placement, constraints, timeline, and what proof can be shown publicly.' },
   { title: 'Design', text: 'Translate the need into a visual direction, scope, content requirements, and practical collaboration plan.' },
@@ -42,6 +52,43 @@ const stylePillars = [
   }
 ];
 
+const inquiryOptions = [
+  {
+    label: 'Commissioned Artwork',
+    description: 'A custom piece developed around a subject, space, occasion, or creative brief.'
+  },
+  {
+    label: 'Original Artwork + Availability',
+    description: 'Questions about an existing piece, availability, dimensions, or acquisition.'
+  },
+  {
+    label: 'Venue Install + Large-Format',
+    description: 'Site-responsive artwork, installations, murals, and larger-format visual work.'
+  },
+  {
+    label: 'Live Event + Live Painting',
+    description: 'Live creative presence for cultural programs, openings, events, and community experiences.'
+  },
+  {
+    label: 'Media + Podcast Collaboration',
+    description: 'Interview, podcast, or media concepts aligned with the developing storytelling lane.'
+  },
+  {
+    label: 'General Collaboration',
+    description: 'A partnership, creative concept, or inquiry that does not fit the categories above.'
+  }
+];
+
+const initialInquiry: InquiryState = {
+  fullName: '',
+  email: '',
+  location: '',
+  timeline: '',
+  budget: '',
+  referenceUrl: '',
+  details: ''
+};
+
 const getAssetPath = (path: string) => {
   return `${import.meta.env.BASE_URL}${path.replace(/^\/+/, '')}`;
 };
@@ -66,6 +113,10 @@ export default function App() {
   const [activeWorkId, setActiveWorkId] = useState<number | null>(null);
   const [activeSection, setActiveSection] = useState('home');
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [inquiryStep, setInquiryStep] = useState(1);
+  const [inquiryType, setInquiryType] = useState('');
+  const [inquiry, setInquiry] = useState<InquiryState>(initialInquiry);
+  const [inquiryValidation, setInquiryValidation] = useState('');
 
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const navLinksRef = useRef<HTMLDivElement>(null);
@@ -80,6 +131,8 @@ export default function App() {
   const filteredWorks = activeCategory === 'All' ? works : works.filter((work) => work.cat === activeCategory.toUpperCase());
   const activeWorkIndex = activeWorkId === null ? -1 : works.findIndex((work) => work.id === activeWorkId);
   const activeWork = activeWorkIndex >= 0 ? works[activeWorkIndex] : null;
+  const emailIsValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inquiry.email.trim());
+  const inquiryDetailsAreValid = inquiry.fullName.trim().length > 1 && emailIsValid && inquiry.details.trim().length > 9;
 
   useEffect(() => {
     if (isNavOpen && navLinksRef.current) {
@@ -256,6 +309,28 @@ export default function App() {
     window.setTimeout(() => bioTriggerRef.current?.focus(), 0);
   };
 
+  const updateInquiry = (field: keyof InquiryState) => (
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
+    setInquiry((current) => ({ ...current, [field]: event.target.value }));
+    setInquiryValidation('');
+  };
+
+  const selectInquiryType = (type: string) => {
+    setInquiryType(type);
+    setInquiryValidation('');
+    setInquiryStep(2);
+  };
+
+  const reviewInquiry = () => {
+    if (!inquiryDetailsAreValid) {
+      setInquiryValidation('Please enter your name, a valid email address, and at least a short project description.');
+      return;
+    }
+    setInquiryValidation('');
+    setInquiryStep(3);
+  };
+
   const heroBgStyle = {
     background: `linear-gradient(90deg, rgba(11,15,20,.96), rgba(11,15,20,.72) 46%, rgba(11,15,20,.36)), linear-gradient(180deg, rgba(11,15,20,.1), rgba(11,15,20,.96)), url("${getAssetPath('/assets/hero/assets_hero_hero-v1.png')}") center / cover no-repeat`
   };
@@ -293,6 +368,7 @@ export default function App() {
               <a href="#work" className={activeSection === 'work' || activeSection === 'style' ? 'active' : ''} onClick={handleNavClick}>Work</a>
               <a href="#media" className={activeSection === 'media' ? 'active' : ''} onClick={handleNavClick}>Media</a>
               <a href="#about" className={activeSection === 'about' ? 'active' : ''} onClick={handleNavClick}>About</a>
+              <a href="#start-project" className="nav-cta" onClick={handleNavClick}>Start A Project</a>
             </div>
           </nav>
         </div>
@@ -303,9 +379,9 @@ export default function App() {
           <div className="container hero-grid">
             <div className="hero-copy">
               <h1 id="hero-title">Visual Art And Audio Storytelling</h1>
-              <p className="lead">San Antonio-based visual artist building high-contrast work in spray paint and acrylic layering, with a podcast lane in active development.</p>
+              <p className="lead">Bob Garcia, known professionally as Señor 808, is a San Antonio-based visual artist building high-contrast work through spray paint, acrylic layering, and mixed-media mark-making.</p>
               <div className="hero-actions">
-                <a className="btn outline-primary" href="#start-project">Start A Project</a>
+                <a className="btn primary" href="#start-project">Start A Project</a>
                 <a className="btn" href="#work">View Work</a>
               </div>
             </div>
@@ -323,10 +399,10 @@ export default function App() {
 
         <section className="section reveal-on-scroll" id="work" aria-labelledby="work-title">
           <div className="container">
-            <div className="section-head split-head">
-              <div>
-                <span className="eyebrow">Selected Work</span>
-                <h2 id="work-title">High-contrast pieces built around motion, rhythm, and depth.</h2>
+            <div className="section-intro">
+              <div className="section-title-block">
+                <h2 id="work-title">Selected Work</h2>
+                <p className="section-tagline">High-contrast pieces built around motion, rhythm, and depth.</p>
               </div>
               <p className="lead">A focused selection of portraiture, typography, geometry, and layered mark-making. Additional details are published only after they are verified and approved.</p>
             </div>
@@ -382,10 +458,10 @@ export default function App() {
 
         <section className="section style-section reveal-on-scroll" id="style" aria-labelledby="style-title">
           <div className="container">
-            <div className="style-intro-grid">
-              <div>
-                <span className="eyebrow">Visual Language</span>
-                <h2 id="style-title">Grit, geometry, and signal.</h2>
+            <div className="section-intro style-intro-grid">
+              <div className="section-title-block">
+                <h2 id="style-title">Visual Language</h2>
+                <p className="section-tagline">Grit, geometry, and signal.</p>
               </div>
               <div className="style-statement">
                 <p className="lead">Señor 808 builds high-contrast surfaces through spray paint, acrylic layering, and mixed-media mark-making. Broken grids, saturated accents, portrait fragments, and typography create movement without reducing the work to a single formula.</p>
@@ -403,7 +479,7 @@ export default function App() {
             </div>
 
             <aside className="style-context" aria-label="Historical context">
-              <span>Historical Context</span>
+              <h3>Historical Context</h3>
               <p>The work draws on late-20th-century Mexican modernism as an interpretive lineage—especially its movement toward abstraction, structural experimentation, and personal expression—without treating a diverse generation as one fixed visual style.</p>
             </aside>
           </div>
@@ -411,10 +487,10 @@ export default function App() {
 
         <section className="section alt reveal-on-scroll media-hero" id="media" aria-labelledby="media-title" style={mediaBgStyle}>
           <div className="container">
-            <div className="section-head split-head">
-              <div>
-                <span className="eyebrow">Studio And Stage</span>
+            <div className="section-intro">
+              <div className="section-title-block">
                 <h2 id="media-title">Media And Live Formats</h2>
+                <p className="section-tagline">Studio, stage, and emerging audio formats.</p>
               </div>
               <p className="lead">Publishing in phases: visual work and collaboration structure first, with on-air and media proof added only when publish-ready and permissioned.</p>
             </div>
@@ -429,16 +505,18 @@ export default function App() {
         <section className="section reveal-on-scroll" id="about" aria-labelledby="about-title">
           <div className="container about-grid">
             <div className="portrait-card">
-              <img src={getAssetPath('/assets/headshots/assets_headshots_headshot-01.png')} loading="lazy" decoding="async" alt="Portrait of Señor 808" />
+              <img src={getAssetPath('/assets/headshots/assets_headshots_headshot-01.png')} loading="lazy" decoding="async" alt="Portrait of Bob Garcia, known as Señor 808" />
             </div>
             <div className="about-copy">
-              <span className="eyebrow">Creative Focus</span>
-              <h2 id="about-title">An artist-first brand with room to grow.</h2>
-              <p className="lead">Señor 808 works where image meets voice. In the studio, he builds high-contrast compositions using spray paint, acrylic layering, and mixed-media mark-making.</p>
+              <div className="section-title-block">
+                <h2 id="about-title">Creative Focus</h2>
+                <p className="section-tagline">An artist-first brand with room to grow.</p>
+              </div>
+              <p className="lead">Bob Garcia, known professionally as Señor 808 and online as The Real Señor 808, works where image meets voice. His established visual-art practice centers high-contrast compositions built through spray paint, acrylic layering, and mixed-media mark-making.</p>
               <p>The work moves between portraiture, typography, and geometry—like signal breaking through noise. A developing media practice carries the same interest in rhythm, framing, and point of view into conversation.</p>
 
               <div className="process-mini">
-                <h3>Our Process</h3>
+                <h3>Collaboration Process</h3>
                 <div className="process-mini-steps">
                   {steps.map((step, index) => (
                     <div key={step.title} className="process-mini-step">
@@ -456,12 +534,12 @@ export default function App() {
 
         <section className="section reveal-on-scroll" id="faq" aria-labelledby="faq-title">
           <div className="container">
-            <div className="section-head split-head">
-              <div>
-                <span className="eyebrow">Details</span>
-                <h2 id="faq-title">Process & Availability</h2>
+            <div className="section-intro">
+              <div className="section-title-block">
+                <h2 id="faq-title">Process &amp; Availability</h2>
+                <p className="section-tagline">Clear expectations before a project begins.</p>
               </div>
-              <p className="lead">Answers to common questions about commissions, shipping, and studio availability.</p>
+              <p className="lead">Commission scope, shipping, studio availability, and delivery requirements are confirmed during inquiry review.</p>
             </div>
             <div className="faq-grid">
               <div className="faq-item">
@@ -474,18 +552,165 @@ export default function App() {
 
         <section className="section alt reveal-on-scroll" id="start-project" aria-labelledby="start-title">
           <div className="container">
-            <div className="section-head split-head">
-              <div>
-                <span className="eyebrow">Project Inquiry</span>
-                <h2 id="start-title">Start a conversation about artwork.</h2>
+            <div className="section-intro inquiry-intro">
+              <div className="section-title-block">
+                <h2 id="start-title">Start A Project</h2>
+                <p className="section-tagline">A clear path from first idea to focused collaboration.</p>
               </div>
-              <p className="lead">Inquiry routing is being finalized before the form is opened publicly.</p>
+              <p className="lead">Choose the type of inquiry, share the essential details, and review everything before sending it directly to the Señor 808 studio inbox.</p>
             </div>
-            <div className="form-shell inquiry-pending" role="status">
-              <span className="eyebrow">Opening Soon</span>
-              <h3>Project inquiry delivery is being connected.</h3>
-              <p>No information entered on this website is currently collected. The form will be activated after successful delivery and spam-protection testing.</p>
-            </div>
+
+            <form
+              className="form-shell smart-inquiry"
+              action="https://formsubmit.co/therealsenor808@gmail.com"
+              method="POST"
+              acceptCharset="UTF-8"
+            >
+              <input type="hidden" name="_subject" value={`New Señor 808 Website Inquiry — ${inquiryType || 'General'}`} />
+              <input type="hidden" name="_next" value="https://workfolios.github.io/senor-808/thanks.html" />
+              <input type="hidden" name="_template" value="table" />
+              <input type="hidden" name="_replyto" value={inquiry.email} />
+              <input className="honeypot-field" type="text" name="_honey" tabIndex={-1} autoComplete="off" aria-hidden="true" />
+
+              <ol className="inquiry-progress" aria-label={`Project inquiry step ${inquiryStep} of 3`}>
+                {[1, 2, 3].map((step) => (
+                  <li
+                    key={step}
+                    className={`${inquiryStep === step ? 'active' : ''} ${inquiryStep > step ? 'complete' : ''}`}
+                    aria-current={inquiryStep === step ? 'step' : undefined}
+                  >
+                    <span>{step}</span>
+                    <strong>{step === 1 ? 'Project Type' : step === 2 ? 'Details' : 'Review'}</strong>
+                  </li>
+                ))}
+              </ol>
+
+              {inquiryStep === 1 && (
+                <div className="inquiry-step">
+                  <div className="inquiry-step-heading">
+                    <h3>What would you like to discuss?</h3>
+                    <p>Select the closest match. Every inquiry reaches the same studio inbox, with the project type included in the message subject.</p>
+                  </div>
+                  <div className="inquiry-options">
+                    {inquiryOptions.map((option) => (
+                      <button
+                        key={option.label}
+                        type="button"
+                        className="inquiry-option"
+                        onClick={() => selectInquiryType(option.label)}
+                      >
+                        <strong>{option.label}</strong>
+                        <span>{option.description}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {inquiryStep === 2 && (
+                <div className="inquiry-step">
+                  <div className="inquiry-step-heading">
+                    <h3>Share the essential details.</h3>
+                    <p><strong>{inquiryType}</strong> is selected. Required fields are marked.</p>
+                  </div>
+
+                  <div className="field-grid">
+                    <label>
+                      Full Name *
+                      <input value={inquiry.fullName} onChange={updateInquiry('fullName')} name="display_name" autoComplete="name" required />
+                    </label>
+                    <label>
+                      Email Address *
+                      <input value={inquiry.email} onChange={updateInquiry('email')} name="display_email" type="email" autoComplete="email" required />
+                    </label>
+                    <label>
+                      Location
+                      <input value={inquiry.location} onChange={updateInquiry('location')} name="display_location" placeholder="City, State" />
+                    </label>
+                    <label>
+                      Preferred Timeline
+                      <select value={inquiry.timeline} onChange={updateInquiry('timeline')} name="display_timeline">
+                        <option value="">Select one</option>
+                        <option value="Within 30 days">Within 30 days</option>
+                        <option value="1–3 months">1–3 months</option>
+                        <option value="3–6 months">3–6 months</option>
+                        <option value="6+ months / exploratory">6+ months / exploratory</option>
+                      </select>
+                    </label>
+                    <label>
+                      Budget Range
+                      <select value={inquiry.budget} onChange={updateInquiry('budget')} name="display_budget">
+                        <option value="">Prefer not to say yet</option>
+                        <option value="Under $1,000">Under $1,000</option>
+                        <option value="$1,000–$3,000">$1,000–$3,000</option>
+                        <option value="$3,000–$7,500">$3,000–$7,500</option>
+                        <option value="$7,500+">$7,500+</option>
+                        <option value="Need guidance">Need guidance</option>
+                      </select>
+                    </label>
+                    <label>
+                      Reference Link
+                      <input value={inquiry.referenceUrl} onChange={updateInquiry('referenceUrl')} name="display_reference" placeholder="Optional link to a space, image, or brief" />
+                    </label>
+                  </div>
+
+                  <label className="details-field">
+                    Project Details *
+                    <textarea
+                      value={inquiry.details}
+                      onChange={updateInquiry('details')}
+                      name="display_details"
+                      required
+                      placeholder="What are you considering, where will the work live, and what would make the collaboration successful?"
+                    />
+                  </label>
+
+                  {inquiryValidation && <p className="validation-message" role="alert">{inquiryValidation}</p>}
+
+                  <div className="form-actions">
+                    <button className="btn" type="button" onClick={() => setInquiryStep(1)}>Back</button>
+                    <button className="btn primary" type="button" onClick={reviewInquiry}>Review Inquiry</button>
+                  </div>
+                </div>
+              )}
+
+              {inquiryStep === 3 && (
+                <div className="inquiry-step">
+                  <div className="inquiry-step-heading">
+                    <h3>Review before sending.</h3>
+                    <p>Confirm the information below. Selecting Send Project Inquiry will deliver the message to Bob Garcia’s Señor 808 studio inbox.</p>
+                  </div>
+
+                  <input type="hidden" name="Project Type" value={inquiryType} />
+                  <input type="hidden" name="Name" value={inquiry.fullName} />
+                  <input type="hidden" name="email" value={inquiry.email} />
+                  <input type="hidden" name="Location" value={inquiry.location || 'Not provided'} />
+                  <input type="hidden" name="Preferred Timeline" value={inquiry.timeline || 'Not provided'} />
+                  <input type="hidden" name="Budget Range" value={inquiry.budget || 'Not provided'} />
+                  <input type="hidden" name="Reference Link" value={inquiry.referenceUrl || 'Not provided'} />
+                  <input type="hidden" name="Project Details" value={inquiry.details} />
+
+                  <dl className="inquiry-review">
+                    <div><dt>Project Type</dt><dd>{inquiryType}</dd></div>
+                    <div><dt>Name</dt><dd>{inquiry.fullName}</dd></div>
+                    <div><dt>Email</dt><dd>{inquiry.email}</dd></div>
+                    <div><dt>Location</dt><dd>{inquiry.location || 'Not provided'}</dd></div>
+                    <div><dt>Timeline</dt><dd>{inquiry.timeline || 'Not provided'}</dd></div>
+                    <div><dt>Budget</dt><dd>{inquiry.budget || 'Not provided'}</dd></div>
+                    <div className="review-wide"><dt>Details</dt><dd>{inquiry.details}</dd></div>
+                  </dl>
+
+                  <p className="privacy-note">Form submissions are processed by FormSubmit and delivered by email. Do not include confidential, financial, medical, or payment information.</p>
+
+                  <div className="form-actions">
+                    <button className="btn" type="button" onClick={() => setInquiryStep(2)}>Edit Details</button>
+                    <button className="btn primary" type="submit">Send Project Inquiry</button>
+                  </div>
+                </div>
+              )}
+            </form>
+
+            <p className="form-only-note">Form-only contact. No public phone number is displayed.</p>
           </div>
         </section>
       </main>
@@ -507,13 +732,13 @@ export default function App() {
           </div>
           <div className="footer-contact">
             <h4>Connect</h4>
-            <p>Project inquiry routing is being finalized.</p>
-            <a href="#start-project" aria-label="View project inquiry status" className="footer-btn">Inquiry Details</a>
+            <p>Project inquiries are handled through the guided Start A Project form.</p>
+            <a href="#start-project" aria-label="Start a project inquiry" className="footer-btn">Start A Project</a>
             <p className="footer-location">San Antonio, Texas</p>
           </div>
         </div>
         <div className="container footer-bottom">
-          <p>© {new Date().getFullYear()} Señor 808. Bob Garcia in formal/legal contexts.</p>
+          <p>© {new Date().getFullYear()} Señor 808 — the visual art practice of Bob Garcia.</p>
         </div>
       </footer>
 
@@ -538,13 +763,10 @@ export default function App() {
       >
         <div className="modal-card" ref={bioDialogRef}>
           <div className="modal-top">
-            <div>
-              <span className="eyebrow">Full Bio</span>
-              <h2 id="bioTitle">Señor 808</h2>
-            </div>
+            <h2 id="bioTitle">About Señor 808</h2>
             <button ref={bioCloseRef} className="modal-close" type="button" aria-label="Close biography" onClick={closeBio}>×</button>
           </div>
-          <p>Señor 808 works where image meets voice. In the studio, he builds high-contrast compositions using spray paint, acrylic layering, and mixed-media mark-making. The work moves between portraiture, typography, and geometry—like signal breaking through noise.</p>
+          <p>Bob Garcia, known professionally as Señor 808, Senor 808, and The Real Señor 808, works where image meets voice. In the studio, he builds high-contrast compositions using spray paint, acrylic layering, and mixed-media mark-making. The work moves between portraiture, typography, and geometry—like signal breaking through noise.</p>
           <p style={{ marginTop: '16px' }}>Visual art is the established primary practice. A developing audio and podcast lane extends the same discipline into conversation through clear rhythm, clean framing, and a distinct point of view.</p>
           <p style={{ marginTop: '16px' }}>Additional project history, approved partner references, and media links will be added as they become publish-ready and permissioned.</p>
         </div>
