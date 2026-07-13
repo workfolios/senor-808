@@ -1,6 +1,9 @@
-name: Deploy Vite Site to GitHub Pages
+name: Validate and Deploy Vite Site
 
 on:
+  pull_request:
+    branches:
+      - main
   push:
     branches:
       - main
@@ -11,7 +14,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: pages-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -25,21 +28,26 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       - name: Install Dependencies
         run: npm ci
 
+      - name: TypeScript Check
+        run: npm run lint
+
       - name: Build Site
         run: npm run build
 
       - name: Upload Pages Artifact
+        if: github.event_name == 'push'
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
 
   deploy:
+    if: github.event_name == 'push'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
