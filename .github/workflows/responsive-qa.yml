@@ -1,0 +1,70 @@
+name: Capture Responsive QA
+
+on:
+  workflow_dispatch:
+    inputs:
+      site_url:
+        description: Optional public URL to capture instead of the local production build
+        required: false
+        default: ''
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  capture:
+    name: Generate Responsive QA Review Pack
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install Project Dependencies
+        run: npm ci
+
+      - name: TypeScript Check
+        run: npm run lint
+
+      - name: Build Site
+        run: npm run build
+
+      - name: Install Playwright For QA Run
+        run: |
+          npm install --no-save --package-lock=false playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Start Local Production Preview
+        if: ${{ inputs.site_url == '' }}
+        run: |
+          nohup npm run preview -- --host 127.0.0.1 --port 4173 > /tmp/senor-808-preview.log 2>&1 &
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:4173/ > /dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat /tmp/senor-808-preview.log
+          exit 1
+
+      - name: Capture Responsive Screenshots
+        env:
+          TARGET_URL: ${{ inputs.site_url != '' && inputs.site_url || 'http://127.0.0.1:4173/' }}
+        run: node scripts/capture-responsive-qa.mjs
+
+      - name: Upload Responsive QA Review Pack
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: senor-808-responsive-qa-${{ github.run_number }}
+          path: artifacts/responsive-qa
+          if-no-files-found: error
+          retention-days: 14
