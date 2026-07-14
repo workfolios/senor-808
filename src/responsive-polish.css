@@ -1,0 +1,39 @@
+/* Responsive polish overrides validated through the automated QA capture workflow. */
+
+@media (max-width: 920px) {
+  .nav-row {
+    z-index: 1;
+  }
+
+  .site-header:has(.nav-links.open) {
+    border-color: rgba(39, 49, 66, 0.92);
+    background: rgba(11, 15, 20, 0.98);
+  }
+
+  .site-header:has(.nav-links.open)::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background: rgba(5, 7, 10, 0.84);
+    backdrop-filter: blur(10px);
+    pointer-events: none;
+  }
+
+  .nav-links.open {
+    background: #0B0F14;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 920px) {
+  .hero {
+    min-height: clamp(720px, 80svh, 860px);
+    padding-top: 118px;
+    padding-bottom: 64px;
+    background-position: 88% center !important;
+  }
+
+  .hero-grid {
+    align-items: center;
+  }
+}
