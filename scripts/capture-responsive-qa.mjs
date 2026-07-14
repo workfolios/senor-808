@@ -39,17 +39,45 @@ async function preparePage(page) {
   });
 
   await page.evaluate(async () => {
-    const step = Math.max(320, Math.floor(window.innerHeight * 0.75));
+    document.querySelectorAll('img').forEach((image) => {
+      image.loading = 'eager';
+    });
+
+    const step = Math.max(280, Math.floor(window.innerHeight * 0.65));
     for (let y = 0; y < document.documentElement.scrollHeight; y += step) {
       window.scrollTo(0, y);
-      await new Promise((resolve) => setTimeout(resolve, 30));
+      await new Promise((resolve) => setTimeout(resolve, 90));
     }
+
+    window.scrollTo(0, document.documentElement.scrollHeight);
+    await new Promise((resolve) => setTimeout(resolve, 250));
     window.scrollTo(0, 0);
+    await new Promise((resolve) => setTimeout(resolve, 250));
+
     await Promise.all(
       Array.from(document.images).map((image) =>
-        image.complete ? Promise.resolve() : image.decode().catch(() => undefined),
+        image.complete ? image.decode().catch(() => undefined) : new Promise((resolve) => {
+          image.addEventListener('load', resolve, { once: true });
+          image.addEventListener('error', resolve, { once: true });
+        }),
       ),
     );
+  });
+
+  await page.waitForLoadState('networkidle');
+  await page.waitForTimeout(250);
+}
+
+async function isolateSectionCapture(page) {
+  await page.addStyleTag({
+    content: `
+      .site-header,
+      .scroll-progress-container,
+      .skip-link,
+      .back-to-top {
+        display: none !important;
+      }
+    `,
   });
 }
 
@@ -61,11 +89,21 @@ async function captureFullPage(viewport) {
   const page = await context.newPage();
   await preparePage(page);
 
-  const layout = await page.evaluate(() => ({
-    viewportWidth: document.documentElement.clientWidth,
-    documentWidth: document.documentElement.scrollWidth,
-    horizontalOverflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
-  }));
+  const layout = await page.evaluate(() => {
+    const images = Array.from(document.images);
+    const failedImages = images
+      .filter((image) => !image.complete || image.naturalWidth === 0)
+      .map((image) => image.currentSrc || image.src || image.alt || 'Unknown image');
+
+    return {
+      viewportWidth: document.documentElement.clientWidth,
+      documentWidth: document.documentElement.scrollWidth,
+      horizontalOverflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
+      imageCount: images.length,
+      loadedImageCount: images.length - failedImages.length,
+      failedImages,
+    };
+  });
 
   findings.push({ viewport: viewport.name, ...layout });
 
@@ -95,6 +133,7 @@ async function captureWorkStates() {
   await workSection.scrollIntoViewIfNeeded();
   await page.getByRole('button', { name: 'Mixed Media' }).click();
   await page.waitForTimeout(350);
+  await isolateSectionCapture(page);
   await workSection.screenshot({ path: path.join(outputDir, 'tablet-768-work-filter-mixed-media.png') });
 
   const firstWorkCard = page.locator('.work-card:not(.skeleton-card)').first();
@@ -111,6 +150,7 @@ async function captureInquiryStates() {
 
   const inquirySection = page.locator('#start-project');
   await inquirySection.scrollIntoViewIfNeeded();
+  await isolateSectionCapture(page);
   await inquirySection.screenshot({ path: path.join(outputDir, 'tablet-768-inquiry-step-1.png') });
 
   await page.getByRole('button', { name: 'Commissioned Artwork' }).click();
@@ -132,6 +172,7 @@ async function captureFooter() {
 
   const footer = page.locator('footer');
   await footer.scrollIntoViewIfNeeded();
+  await isolateSectionCapture(page);
   await footer.screenshot({ path: path.join(outputDir, 'tablet-820-footer.png') });
 
   await context.close();
@@ -154,12 +195,20 @@ try {
     `Generated: ${generatedAt}`,
     `Target: ${targetUrl}`,
     '',
-    '## Horizontal Overflow Check',
+    '## Layout And Image Check',
     '',
-    '| Viewport | CSS Width | Document Width | Overflow |',
-    '|---|---:|---:|---|',
+    '| Viewport | CSS Width | Document Width | Overflow | Images Loaded |',
+    '|---|---:|---:|---|---:|',
     ...findings.map((item) =>
-      `| ${item.viewport} | ${item.viewportWidth}px | ${item.documentWidth}px | ${item.horizontalOverflow ? 'YES' : 'No'} |`,
+      `| ${item.viewport} | ${item.viewportWidth}px | ${item.documentWidth}px | ${item.horizontalOverflow ? 'YES' : 'No'} | ${item.loadedImageCount}/${item.imageCount} |`,
+    ),
+    '',
+    '## Image Failures',
+    '',
+    ...findings.flatMap((item) =>
+      item.failedImages.length > 0
+        ? [`- ${item.viewport}: ${item.failedImages.join(', ')}`]
+        : [`- ${item.viewport}: None`],
     ),
     '',
     '## Captured States',
