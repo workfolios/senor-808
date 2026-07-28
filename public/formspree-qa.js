@@ -24,6 +24,21 @@
       form.querySelector(`input[name="${fieldName}"]`)?.remove();
     });
 
+    const inquiryIntro = document.querySelector('#start-project .inquiry-intro > .lead');
+    const inquiryIntroCopy = 'Choose the type of inquiry, share the essential details, and review everything before sending it to the designated Señor 808 project inquiry inbox.';
+    if (inquiryIntro && inquiryIntro.textContent !== inquiryIntroCopy) {
+      inquiryIntro.textContent = inquiryIntroCopy;
+    }
+
+    const reviewHeading = Array.from(form.querySelectorAll('.inquiry-step-heading h3')).find(
+      (heading) => heading.textContent?.trim() === 'Review before sending.'
+    );
+    const reviewCopy = reviewHeading?.nextElementSibling;
+    const reviewText = 'Confirm the information below. Selecting Send Project Inquiry will deliver the message to the designated Señor 808 project inquiry inbox.';
+    if (reviewCopy && reviewCopy.textContent !== reviewText) {
+      reviewCopy.textContent = reviewText;
+    }
+
     const privacyNote = form.querySelector('.privacy-note');
     const privacyCopy = 'Form submissions are processed by Formspree and delivered by email. Do not include confidential, financial, medical, or payment information.';
     if (privacyNote && privacyNote.textContent !== privacyCopy) {
