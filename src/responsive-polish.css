@@ -1,4 +1,4 @@
-/* Responsive polish overrides validated through the automated QA capture workflow. */
+/* Responsive polish overrides validated through automated and real-device QA. */
 
 @media (max-width: 920px) {
   .nav-row {
@@ -23,6 +23,36 @@
   .nav-links.open {
     background: #0B0F14;
   }
+
+  .section-intro {
+    gap: clamp(24px, 4vw, 34px);
+  }
+
+  .filter-btn {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+  }
+
+  /* Keep the portrait from becoming disproportionately tall when About stacks. */
+  .portrait-card {
+    width: min(100%, 520px);
+    margin-inline: auto;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 920px) {
+  /* Two-plus-one rhythm is more efficient than three oversized stacked cards. */
+  .cards-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .cards-3 .info-card:last-child {
+    grid-column: 1 / -1;
+    min-height: 220px;
+  }
 }
 
 @media (min-width: 641px) and (max-width: 920px) {
@@ -35,5 +65,70 @@
 
   .hero-grid {
     align-items: center;
+  }
+}
+
+@media (max-width: 768px) {
+  .cards-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .cards-3 .info-card:last-child {
+    grid-column: auto;
+  }
+
+  .info-card {
+    min-height: 220px;
+  }
+}
+
+@media (max-width: 640px) {
+  /* Preserve all four proof points without consuming an entire mobile screen. */
+  .proof-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .proof-item {
+    min-width: 0;
+    padding: 20px 14px;
+  }
+
+  .proof-item:nth-child(-n + 2) {
+    border-bottom: 1px solid rgba(39, 49, 66, 0.55);
+  }
+
+  .proof-item:nth-child(2n) {
+    border-right: 1px solid rgba(39, 49, 66, 0.55);
+  }
+
+  .proof-item span {
+    font-size: 0.72rem;
+    line-height: 1.35;
+  }
+
+  .proof-item strong {
+    margin-top: 7px;
+    font-size: 0.96rem;
+    line-height: 1.35;
+    overflow-wrap: anywhere;
+  }
+
+  .filter-list {
+    gap: 10px;
+    margin-bottom: 32px;
+  }
+
+  .filter-btn {
+    padding-inline: 16px;
+  }
+
+  .info-card {
+    min-height: auto;
+    padding: 26px;
+  }
+
+  /* Floating chrome should never cover artwork or editorial cards on phones. */
+  .back-to-top {
+    display: none;
   }
 }
