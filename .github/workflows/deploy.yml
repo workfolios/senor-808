@@ -9,7 +9,7 @@ on:
       - main
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
@@ -24,8 +24,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref || github.ref_name }}
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -33,43 +31,26 @@ jobs:
           node-version: 22
           cache: npm
 
-      - name: Apply Closeout Refinements
-        run: node scripts/apply-closeout-refinements.mjs
-
       - name: Install Dependencies
         run: npm ci
-
-      - name: Preflight SEO Metadata Check
-        run: npm run validate:seo
 
       - name: TypeScript Check
         run: npm run lint
 
+      - name: SEO Metadata Check
+        run: npm run validate:seo
+
       - name: Build Site
         run: npm run build
 
-      - name: Commit Refined Source To Pull Request
-        if: github.event_name == 'pull_request'
-        env:
-          TARGET_BRANCH: ${{ github.head_ref }}
-        run: |
-          rm -rf node_modules
-          rm -f CLOSEOUT_TRIGGER.md
-          git checkout -- .github/workflows/deploy.yml
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add src/App.tsx index.html README.md package.json scripts/validate-seo.mjs CLOSEOUT_TRIGGER.md
-          git commit -m "Optimize SEO metadata and refine hero copy"
-          git push origin HEAD:"$TARGET_BRANCH"
-
       - name: Upload Pages Artifact
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'push'
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
 
   deploy:
-    if: github.event_name == 'pull_request'
+    if: github.event_name == 'push'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
