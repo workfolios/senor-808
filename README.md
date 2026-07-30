@@ -1,6 +1,12 @@
 # Señor 808 Portfolio
 
-A one-page artist portfolio website for Señor 808, built to present visual artwork, selected collaboration formats, and a developing media direction through proof-honest public content.
+A one-page portfolio for San Antonio visual artist Bob Garcia, known as Señor 808, featuring high-contrast mixed-media work, commissions, live painting, and a developing audio-storytelling lane.
+
+## Repository About Metadata
+
+- **Description:** Artist portfolio for Bob Garcia / Señor 808 — high-contrast mixed-media visual art, commissions, live painting, and developing audio storytelling.
+- **Website:** https://workfolios.github.io/senor-808/
+- **Topics:** artist-portfolio, visual-art, mixed-media, react, vite, typescript, github-pages, responsive-design, accessibility, formspree
 
 ## Tech Stack
 - **Framework:** React + Vite
