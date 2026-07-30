@@ -368,7 +368,6 @@ export default function App() {
               <a href="#style" className={activeSection === 'style' ? 'active' : ''} onClick={handleNavClick}>Visual Language</a>
               <a href="#media" className={activeSection === 'media' ? 'active' : ''} onClick={handleNavClick}>Media &amp; Live Formats</a>
               <a href="#about" className={activeSection === 'about' ? 'active' : ''} onClick={handleNavClick}>Creative Focus</a>
-              <a href="#faq" className={`nav-secondary-link ${activeSection === 'faq' ? 'active' : ''}`} onClick={handleNavClick}>Process &amp; Availability</a>
               <a href="#start-project" className="nav-cta" onClick={handleNavClick}>Start A Project</a>
             </div>
           </nav>
@@ -383,7 +382,7 @@ export default function App() {
               <p className="lead">Building high-contrast work through spray paint, acrylic layering, and mixed-media mark-making.</p>
               <div className="hero-actions">
                 <a className="btn primary" href="#start-project">Start A Project</a>
-                <a className="btn" href="#work">View Work</a>
+                <a className="btn" href="#work">View Selected Work</a>
               </div>
             </div>
           </div>
@@ -750,13 +749,12 @@ export default function App() {
             </nav>
           </div>
           <div className="footer-links">
-            <h4>Explore</h4>
+            <h2 className="footer-heading">Explore</h2>
             <nav aria-label="Footer navigation">
               <a href="#work" onClick={handleNavClick}>Selected Work</a>
               <a href="#style" onClick={handleNavClick}>Visual Language</a>
               <a href="#media" onClick={handleNavClick}>Media &amp; Live Formats</a>
               <a href="#about" onClick={handleNavClick}>Creative Focus</a>
-              <a href="#faq" onClick={handleNavClick}>Process &amp; Availability</a>
             </nav>
             <p className="footer-copyright">© {new Date().getFullYear()} Señor 808 (Bob Garcia)</p>
           </div>
