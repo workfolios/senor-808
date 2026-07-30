@@ -1,0 +1,71 @@
+/* Final footer proportion and alignment pass.
+   Loaded after responsive-polish.css so these rules remain isolated and reversible. */
+
+:root {
+  --footer-identity-rail: 190px;
+  --footer-social-pill-width: 124px;
+}
+
+.footer-brand {
+  width: min(100%, var(--footer-identity-rail));
+}
+
+.footer-brand .footer-btn {
+  width: 100%;
+  max-width: none;
+}
+
+.footer-meta {
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  column-gap: clamp(22px, 3vw, 38px);
+  row-gap: 16px;
+}
+
+.footer-socials {
+  display: grid;
+  grid-template-columns: repeat(2, var(--footer-social-pill-width));
+  gap: 12px;
+  flex: 0 0 auto;
+}
+
+.social-badge {
+  width: var(--footer-social-pill-width);
+  min-width: var(--footer-social-pill-width);
+  padding-inline: 12px;
+}
+
+.social-badge svg,
+.social-badge span {
+  flex: 0 0 auto;
+}
+
+.footer-copyright {
+  flex: 0 0 auto;
+  text-align: left;
+}
+
+@media (max-width: 920px) {
+  .footer-meta {
+    align-items: flex-start;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    row-gap: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --footer-identity-rail: 196px;
+  }
+
+  .footer-socials {
+    width: 100%;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .social-badge {
+    width: 100%;
+    min-width: 0;
+  }
+}
