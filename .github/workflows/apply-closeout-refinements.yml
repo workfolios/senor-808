@@ -3,7 +3,7 @@ name: Apply Closeout SEO And Hero Refinements
 on:
   push:
     branches:
-      - closeout-seo-hero
+      - main
     paths:
       - .github/workflows/apply-closeout-refinements.yml
 
@@ -16,10 +16,10 @@ jobs:
     timeout-minutes: 15
 
     steps:
-      - name: Checkout Refinement Branch
+      - name: Checkout Main
         uses: actions/checkout@v4
         with:
-          ref: closeout-seo-hero
+          ref: main
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -53,4 +53,4 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
           git commit -m "Optimize SEO metadata and refine hero copy"
-          git push origin HEAD:closeout-seo-hero
+          git push origin HEAD:main
