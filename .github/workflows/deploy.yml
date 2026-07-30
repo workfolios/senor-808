@@ -24,6 +24,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref_name }}
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -47,10 +49,13 @@ jobs:
         run: npm run build
 
       - name: Finalize Refined Source
-        if: github.event_name == 'push'
+        if: github.event_name == 'pull_request'
+        env:
+          TARGET_BRANCH: ${{ github.head_ref }}
         run: |
           rm -f scripts/apply-closeout-refinements.mjs
           rm -f .github/workflows/apply-closeout-refinements.yml
+          rm -f CLOSEOUT_TRIGGER.md
           cat > .github/workflows/deploy.yml <<'YAML'
           name: Validate and Deploy Vite Site
 
@@ -122,16 +127,16 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A
           git commit -m "Optimize SEO metadata and refine hero copy"
-          git push origin HEAD:main
+          git push origin HEAD:"$TARGET_BRANCH"
 
       - name: Upload Pages Artifact
-        if: github.event_name == 'push'
+        if: github.event_name == 'pull_request'
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
 
   deploy:
-    if: github.event_name == 'push'
+    if: github.event_name == 'pull_request'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
