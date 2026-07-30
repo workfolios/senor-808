@@ -1,3 +1,3 @@
 # Closeout Automation Trigger
 
-This temporary file triggers the validated SEO and hero-copy closeout workflow. The workflow removes this file before committing the final source changes.
+This temporary file triggers the validated SEO and hero-copy closeout workflow. Retry uses a restricted commit scope so generated dependencies and workflow files are excluded from the source commit.
