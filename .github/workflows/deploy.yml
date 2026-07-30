@@ -1,15 +1,20 @@
-name: Validate Footer And Navigation Refinements
+name: Validate and Deploy Vite Site
 
 on:
   pull_request:
     branches:
       - main
+  push:
+    branches:
+      - main
 
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
 
 concurrency:
-  group: footer-header-${{ github.ref }}
+  group: pages-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -17,19 +22,14 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Pull Request Branch
+      - name: Checkout
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.head_ref }}
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
-
-      - name: Apply Footer And Navigation Refinements
-        run: node scripts/apply-footer-header-polish.mjs
 
       - name: Install Dependencies
         run: npm ci
@@ -43,16 +43,22 @@ jobs:
       - name: Build Site
         run: npm run build
 
-      - name: Commit Generated Source To Pull Request
-        env:
-          TARGET_BRANCH: ${{ github.head_ref }}
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add src/App.tsx src/responsive-polish.css index.html scripts/validate-seo.mjs
-          if git diff --cached --quiet; then
-            echo "Generated source is already current."
-          else
-            git commit -m "Refine footer navigation and social identity"
-            git push origin HEAD:"$TARGET_BRANCH"
-          fi
+      - name: Upload Pages Artifact
+        if: github.event_name == 'push'
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist
+
+  deploy:
+    if: github.event_name == 'push'
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
