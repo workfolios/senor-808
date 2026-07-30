@@ -31,7 +31,18 @@ if (!jsonLdMatch) {
     const data = JSON.parse(jsonLdMatch[1]);
     const graph = Array.isArray(data['@graph']) ? data['@graph'] : [data];
     if (!graph.some((node) => node['@type'] === 'WebSite')) fail('WebSite structured data');
-    if (!graph.some((node) => node['@type'] === 'Person')) fail('Person structured data');
+    const person = graph.find((node) => node['@type'] === 'Person');
+    if (!person) {
+      fail('Person structured data');
+    } else {
+      const sameAs = Array.isArray(person.sameAs) ? person.sameAs : [];
+      for (const profile of [
+        'https://www.instagram.com/808theartist',
+        'https://www.threads.com/@808theartist'
+      ]) {
+        if (!sameAs.includes(profile)) fail(`Person social profile URL ${profile}`);
+      }
+    }
   } catch (error) {
     fail(`parseable JSON-LD (${error.message})`);
   }
