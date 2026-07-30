@@ -314,3 +314,53 @@
     margin-top: 22px;
   }
 }
+
+
+/* Final footer hierarchy and one-primary CTA system. */
+.nav-cta {
+  border-color: var(--accent);
+  background: transparent;
+  color: var(--text);
+  box-shadow: none;
+}
+
+.nav-cta:hover,
+.nav-cta:focus-visible {
+  border-color: var(--accent-2);
+  background: rgba(216, 27, 96, 0.12);
+  color: var(--text);
+  box-shadow: 0 10px 28px rgba(216, 27, 96, 0.14);
+}
+
+.footer-tagline {
+  color: var(--muted);
+  font-size: clamp(1.05rem, 1.55vw, 1.25rem);
+  font-weight: 500;
+  line-height: 1.42;
+  letter-spacing: -0.018em;
+}
+
+.footer-heading {
+  max-width: none;
+  margin: 0 0 18px;
+  color: var(--text);
+  font-family: var(--font-heading);
+  font-size: clamp(1.16rem, 1.7vw, 1.34rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.022em;
+}
+
+.footer-btn {
+  background: transparent;
+  box-shadow: none;
+}
+
+.footer-btn:hover,
+.footer-btn:focus-visible {
+  border-color: var(--accent-2);
+  background: rgba(216, 27, 96, 0.12);
+  color: var(--text) !important;
+  box-shadow: 0 10px 28px rgba(216, 27, 96, 0.14);
+  transform: translateY(-2px);
+}
