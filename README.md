@@ -7,6 +7,7 @@ A one-page portfolio for San Antonio visual artist Bob Garcia, known as Señor 8
 - **Description:** Artist portfolio for Bob Garcia / Señor 808 — high-contrast mixed-media visual art, commissions, live painting, and developing audio storytelling.
 - **Website:** https://workfolios.github.io/senor-808/
 - **Topics:** artist-portfolio, visual-art, mixed-media, react, vite, typescript, github-pages, responsive-design, accessibility, formspree
+- **Configuration Note:** Apply the description, website URL, and topics above in the repository About settings.
 
 ## Tech Stack
 - **Framework:** React + Vite
