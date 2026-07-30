@@ -364,10 +364,11 @@ export default function App() {
               Menu
             </button>
             <div ref={navLinksRef} className={`nav-links ${isNavOpen ? 'open' : ''}`} id="navLinks">
-              <a href="#home" className={activeSection === 'home' ? 'active' : ''} onClick={handleNavClick}>Home</a>
-              <a href="#work" className={activeSection === 'work' || activeSection === 'style' ? 'active' : ''} onClick={handleNavClick}>Work</a>
-              <a href="#media" className={activeSection === 'media' ? 'active' : ''} onClick={handleNavClick}>Media</a>
-              <a href="#about" className={activeSection === 'about' ? 'active' : ''} onClick={handleNavClick}>About</a>
+              <a href="#work" className={activeSection === 'work' ? 'active' : ''} onClick={handleNavClick}>Selected Work</a>
+              <a href="#style" className={activeSection === 'style' ? 'active' : ''} onClick={handleNavClick}>Visual Language</a>
+              <a href="#media" className={activeSection === 'media' ? 'active' : ''} onClick={handleNavClick}>Media &amp; Live Formats</a>
+              <a href="#about" className={activeSection === 'about' ? 'active' : ''} onClick={handleNavClick}>Creative Focus</a>
+              <a href="#faq" className={`nav-secondary-link ${activeSection === 'faq' ? 'active' : ''}`} onClick={handleNavClick}>Process &amp; Availability</a>
               <a href="#start-project" className="nav-cta" onClick={handleNavClick}>Start A Project</a>
             </div>
           </nav>
@@ -489,7 +490,7 @@ export default function App() {
           <div className="container">
             <div className="section-intro">
               <div className="section-title-block">
-                <h2 id="media-title">Media And Live Formats</h2>
+                <h2 id="media-title">Media &amp; Live Formats</h2>
                 <p className="section-tagline">Studio, stage, and emerging audio formats.</p>
               </div>
               <p className="lead">Publishing in phases: visual work and collaboration structure first, with on-air and media proof added only when publish-ready and permissioned.</p>
@@ -719,26 +720,46 @@ export default function App() {
         <div className="container footer-grid">
           <div className="footer-brand">
             <img src={getAssetPath('/assets/logos/Senor808_Wordmark_Primary_White.svg')} loading="lazy" decoding="async" alt="Señor 808" />
-            <p className="footer-tagline">Bold Visual Art.<br />Clean Creative Presence.</p>
+            <p className="footer-tagline">Visual Artist &amp;<br />Audio Storyteller</p>
+            <a href="#start-project" aria-label="Start a project inquiry" className="footer-btn">Start A Project</a>
+            <nav className="footer-socials" aria-label="Señor 808 social media">
+              <a
+                className="social-badge"
+                href="https://www.instagram.com/808theartist"
+                target="_blank"
+                rel="me noreferrer"
+                aria-label="Señor 808 on Instagram — opens in a new tab"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <rect x="3.25" y="3.25" width="17.5" height="17.5" rx="5" />
+                  <circle cx="12" cy="12" r="4.1" />
+                  <circle cx="17.4" cy="6.7" r="1" className="social-icon-dot" />
+                </svg>
+              </a>
+              <a
+                className="social-badge"
+                href="https://www.threads.com/@808theartist"
+                target="_blank"
+                rel="me noreferrer"
+                aria-label="Señor 808 on Threads — opens in a new tab"
+              >
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                  <path d="M17.8 10.8c-.2-3.8-2.3-6-5.8-6-3.8 0-6.2 2.6-6.2 6.7 0 4.7 2.7 7.7 6.7 7.7 3.4 0 5.6-1.9 5.6-4.6 0-2.5-1.7-4.1-4.5-4.1-2.5 0-4.2 1.5-4.2 3.7 0 2 1.6 3.4 3.8 3.4 2.9 0 4.7-2.1 4.7-5.6 0-4.4-2.6-7.2-6.8-7.2-4.8 0-8 3.3-8 8.3 0 5.5 3.3 9 8.4 9 4.8 0 8-3 8-7.5 0-1-.1-1.9-.3-2.8" />
+                </svg>
+              </a>
+            </nav>
           </div>
           <div className="footer-links">
             <h4>Explore</h4>
             <nav aria-label="Footer navigation">
-              <a href="#work" onClick={handleNavClick}>Work</a>
+              <a href="#work" onClick={handleNavClick}>Selected Work</a>
               <a href="#style" onClick={handleNavClick}>Visual Language</a>
-              <a href="#media" onClick={handleNavClick}>Media</a>
-              <a href="#about" onClick={handleNavClick}>About</a>
+              <a href="#media" onClick={handleNavClick}>Media &amp; Live Formats</a>
+              <a href="#about" onClick={handleNavClick}>Creative Focus</a>
+              <a href="#faq" onClick={handleNavClick}>Process &amp; Availability</a>
             </nav>
+            <p className="footer-copyright">© {new Date().getFullYear()} Señor 808 (Bob Garcia)</p>
           </div>
-          <div className="footer-contact">
-            <h4>Connect</h4>
-            <p>Project inquiries are handled through the guided Start A Project form.</p>
-            <a href="#start-project" aria-label="Start a project inquiry" className="footer-btn">Start A Project</a>
-            <p className="footer-location">San Antonio, Texas</p>
-          </div>
-        </div>
-        <div className="container footer-bottom">
-          <p>© {new Date().getFullYear()} Señor 808 — the visual art practice of Bob Garcia.</p>
         </div>
       </footer>
 
