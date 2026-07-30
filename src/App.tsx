@@ -378,8 +378,8 @@ export default function App() {
         <section className="hero reveal-on-scroll" id="home" aria-labelledby="hero-title" style={heroBgStyle}>
           <div className="container hero-grid">
             <div className="hero-copy">
-              <h1 id="hero-title">Visual Art And Audio Storytelling</h1>
-              <p className="lead">Bob Garcia, known professionally as Señor 808, is a San Antonio-based visual artist building high-contrast work through spray paint, acrylic layering, and mixed-media mark-making.</p>
+              <h1 id="hero-title">Visual Artist &amp; Audio Storyteller</h1>
+              <p className="lead">Building high-contrast work through spray paint, acrylic layering, and mixed-media mark-making.</p>
               <div className="hero-actions">
                 <a className="btn primary" href="#start-project">Start A Project</a>
                 <a className="btn" href="#work">View Work</a>
