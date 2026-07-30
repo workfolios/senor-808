@@ -710,7 +710,6 @@ export default function App() {
               )}
             </form>
 
-            <p className="form-only-note">Form-only contact. No public phone number is displayed.</p>
           </div>
         </section>
       </main>
@@ -721,32 +720,6 @@ export default function App() {
             <img src={getAssetPath('/assets/logos/Senor808_Wordmark_Primary_White.svg')} loading="lazy" decoding="async" alt="Señor 808" />
             <p className="footer-tagline">Visual Artist &amp;<br />Audio Storyteller</p>
             <a href="#start-project" aria-label="Start a project inquiry" className="footer-btn">Start A Project</a>
-            <nav className="footer-socials" aria-label="Señor 808 social media">
-              <a
-                className="social-badge"
-                href="https://www.instagram.com/808theartist"
-                target="_blank"
-                rel="me noreferrer"
-                aria-label="Señor 808 on Instagram — opens in a new tab"
-              >
-                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                  <rect x="3.25" y="3.25" width="17.5" height="17.5" rx="5" />
-                  <circle cx="12" cy="12" r="4.1" />
-                  <circle cx="17.4" cy="6.7" r="1" className="social-icon-dot" />
-                </svg>
-              </a>
-              <a
-                className="social-badge"
-                href="https://www.threads.com/@808theartist"
-                target="_blank"
-                rel="me noreferrer"
-                aria-label="Señor 808 on Threads — opens in a new tab"
-              >
-                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                  <path d="M17.8 10.8c-.2-3.8-2.3-6-5.8-6-3.8 0-6.2 2.6-6.2 6.7 0 4.7 2.7 7.7 6.7 7.7 3.4 0 5.6-1.9 5.6-4.6 0-2.5-1.7-4.1-4.5-4.1-2.5 0-4.2 1.5-4.2 3.7 0 2 1.6 3.4 3.8 3.4 2.9 0 4.7-2.1 4.7-5.6 0-4.4-2.6-7.2-6.8-7.2-4.8 0-8 3.3-8 8.3 0 5.5 3.3 9 8.4 9 4.8 0 8-3 8-7.5 0-1-.1-1.9-.3-2.8" />
-                </svg>
-              </a>
-            </nav>
           </div>
           <div className="footer-links">
             <h2 className="footer-heading">Explore</h2>
@@ -756,7 +729,37 @@ export default function App() {
               <a href="#media" onClick={handleNavClick}>Media &amp; Live Formats</a>
               <a href="#about" onClick={handleNavClick}>Creative Focus</a>
             </nav>
-            <p className="footer-copyright">© {new Date().getFullYear()} Señor 808 (Bob Garcia)</p>
+            <div className="footer-meta">
+              <nav className="footer-socials" aria-label="Señor 808 social media">
+                <a
+                  className="social-badge"
+                  href="https://www.instagram.com/808theartist"
+                  target="_blank"
+                  rel="me noreferrer"
+                  aria-label="Señor 808 on Instagram — opens in a new tab"
+                >
+                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <rect x="3.25" y="3.25" width="17.5" height="17.5" rx="5" />
+                    <circle cx="12" cy="12" r="4.1" />
+                    <circle cx="17.4" cy="6.7" r="1" className="social-icon-dot" />
+                  </svg>
+                  <span>Instagram</span>
+                </a>
+                <a
+                  className="social-badge"
+                  href="https://www.threads.com/@808theartist"
+                  target="_blank"
+                  rel="me noreferrer"
+                  aria-label="Señor 808 on Threads — opens in a new tab"
+                >
+                  <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M17.8 10.8c-.2-3.8-2.3-6-5.8-6-3.8 0-6.2 2.6-6.2 6.7 0 4.7 2.7 7.7 6.7 7.7 3.4 0 5.6-1.9 5.6-4.6 0-2.5-1.7-4.1-4.5-4.1-2.5 0-4.2 1.5-4.2 3.7 0 2 1.6 3.4 3.8 3.4 2.9 0 4.7-2.1 4.7-5.6 0-4.4-2.6-7.2-6.8-7.2-4.8 0-8 3.3-8 8.3 0 5.5 3.3 9 8.4 9 4.8 0 8-3 8-7.5 0-1-.1-1.9-.3-2.8" />
+                  </svg>
+                  <span>Threads</span>
+                </a>
+              </nav>
+              <p className="footer-copyright">© {new Date().getFullYear()} Señor 808 (Bob Garcia)</p>
+            </div>
           </div>
         </div>
       </footer>
