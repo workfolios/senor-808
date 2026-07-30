@@ -1,0 +1,55 @@
+name: Apply Footer Hierarchy And CTA Refinements
+
+on:
+  push:
+    branches:
+      - cta-footer-hierarchy-final-pass
+    paths:
+      - .github/workflows/apply-cta-footer-hierarchy.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cta-footer-hierarchy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout Refinement Branch
+        uses: actions/checkout@v4
+        with:
+          ref: cta-footer-hierarchy-final-pass
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Apply Approved Refinements
+        run: node scripts/apply-cta-footer-hierarchy.mjs
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: TypeScript Check
+        run: npm run lint
+
+      - name: SEO Metadata Check
+        run: npm run validate:seo
+
+      - name: Build Site
+        run: npm run build
+
+      - name: Commit Refined Source
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/App.tsx src/responsive-polish.css
+          git commit -m "Refine footer hierarchy and CTA system"
+          git push origin HEAD:cta-footer-hierarchy-final-pass
