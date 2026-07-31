@@ -10,12 +10,37 @@
   gap: 0;
 }
 
-/* Keep the hero supporting statement in the approved two-line composition on
-   desktop and tablet, with the ampersand beginning the second line. */
-@media (min-width: 641px) {
+/* Preserve the existing tablet treatment. */
+@media (min-width: 641px) and (max-width: 920px) {
   .hero-copy .lead {
     max-width: 29em;
     text-wrap: pretty;
+  }
+}
+
+/* Desktop copy rhythm: avoid intermediate wraps and isolated trailing words. */
+@media (min-width: 921px) {
+  .hero-copy .lead {
+    max-width: 26em;
+    text-wrap: wrap;
+  }
+
+  #work .section-tagline {
+    max-width: 22em;
+    text-wrap: wrap;
+  }
+}
+
+/* At wider desktop widths, give the Selected Work title block enough room
+   to present its supporting statement on one complete line. */
+@media (min-width: 1100px) {
+  #work .section-intro {
+    grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.65fr);
+  }
+
+  #work .section-tagline {
+    max-width: none;
+    white-space: nowrap;
   }
 }
 
