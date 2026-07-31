@@ -379,7 +379,7 @@ export default function App() {
           <div className="container hero-grid">
             <div className="hero-copy">
               <h1 id="hero-title">Visual Artist &amp; Audio Storyteller</h1>
-              <p className="lead">Building high-contrast work through spray paint, acrylic layering, and mixed-media mark-making.</p>
+              <p className="lead">Building high-contrast work through spray paint, acrylic layering, &amp; mixed-media mark-making</p>
               <div className="hero-actions">
                 <a className="btn primary" href="#start-project">Start A Project</a>
                 <a className="btn" href="#work">View Selected Work</a>
@@ -402,7 +402,7 @@ export default function App() {
             <div className="section-intro">
               <div className="section-title-block">
                 <h2 id="work-title">Selected Work</h2>
-                <p className="section-tagline">High-contrast pieces built around motion, rhythm, and depth.</p>
+                <p className="section-tagline">High-contrast pieces built around motion, rhythm, &amp; depth</p>
               </div>
               <p className="lead">A focused selection of portraiture, typography, geometry, and layered mark-making. Additional details are published only after they are verified and approved.</p>
             </div>
@@ -461,7 +461,7 @@ export default function App() {
             <div className="section-intro style-intro-grid">
               <div className="section-title-block">
                 <h2 id="style-title">Visual Language</h2>
-                <p className="section-tagline">Grit, geometry, and signal.</p>
+                <p className="section-tagline">Grit, geometry, &amp; signal</p>
               </div>
               <div className="style-statement">
                 <p className="lead">Señor 808 builds high-contrast surfaces through spray paint, acrylic layering, and mixed-media mark-making. Broken grids, saturated accents, portrait fragments, and typography create movement without reducing the work to a single formula.</p>
@@ -490,7 +490,7 @@ export default function App() {
             <div className="section-intro">
               <div className="section-title-block">
                 <h2 id="media-title">Media &amp; Live Formats</h2>
-                <p className="section-tagline">Studio, stage, and emerging audio formats.</p>
+                <p className="section-tagline">Studio, stage, &amp; emerging audio formats</p>
               </div>
               <p className="lead">Publishing in phases: visual work and collaboration structure first, with on-air and media proof added only when publish-ready and permissioned.</p>
             </div>
@@ -510,7 +510,7 @@ export default function App() {
             <div className="about-copy">
               <div className="section-title-block">
                 <h2 id="about-title">Creative Focus</h2>
-                <p className="section-tagline">An artist-first brand with room to grow.</p>
+                <p className="section-tagline">An artist-first brand with room to grow</p>
               </div>
               <p className="lead">Bob Garcia, known professionally as Señor 808 and online as The Real Señor 808, works where image meets voice. His established visual-art practice centers high-contrast compositions built through spray paint, acrylic layering, and mixed-media mark-making.</p>
               <p>The work moves between portraiture, typography, and geometry—like signal breaking through noise. A developing media practice carries the same interest in rhythm, framing, and point of view into conversation.</p>
@@ -537,7 +537,7 @@ export default function App() {
             <div className="section-intro">
               <div className="section-title-block">
                 <h2 id="faq-title">Process &amp; Availability</h2>
-                <p className="section-tagline">Clear expectations before a project begins.</p>
+                <p className="section-tagline">Clear expectations before a project begins</p>
               </div>
               <p className="lead">Commission scope, shipping, studio availability, and delivery requirements are confirmed during inquiry review.</p>
             </div>
@@ -552,12 +552,11 @@ export default function App() {
 
         <section className="section alt reveal-on-scroll" id="start-project" aria-labelledby="start-title">
           <div className="container">
-            <div className="section-intro inquiry-intro">
+            <div className="section-intro inquiry-intro inquiry-intro-single">
               <div className="section-title-block">
                 <h2 id="start-title">Start A Project</h2>
-                <p className="section-tagline">A clear path from first idea to focused collaboration.</p>
+                <p className="section-tagline">A clear path from first idea to focused collaboration</p>
               </div>
-              <p className="lead">Choose the type of inquiry, share the essential details, and review everything before sending it directly to the Señor 808 studio inbox.</p>
             </div>
 
             <form
