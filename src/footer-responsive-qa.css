@@ -1,0 +1,192 @@
+/* Responsive footer QA refinement.
+   Loaded after all prior footer overrides so the final layout remains isolated and reversible. */
+
+:root {
+  --footer-identity-rail: 174px;
+  --footer-social-pill-width: 124px;
+}
+
+/* Tighten the transition from the inquiry section into the footer. */
+#start-project {
+  padding-bottom: clamp(52px, 5vw, 72px);
+}
+
+.site-footer {
+  padding-top: clamp(40px, 4.5vw, 58px);
+}
+
+/* Header and footer utility CTAs share the same 44px pill height. */
+.nav-cta,
+.footer-brand .footer-btn {
+  min-height: 44px;
+  height: 44px;
+}
+
+@media (min-width: 721px) {
+  .footer-grid {
+    display: grid;
+    grid-template-columns: minmax(var(--footer-identity-rail), 0.72fr) minmax(0, 1.28fr);
+    grid-template-rows: auto auto auto;
+    column-gap: clamp(48px, 8vw, 116px);
+    row-gap: 12px;
+    align-items: start;
+  }
+
+  .footer-brand,
+  .footer-links {
+    display: contents;
+  }
+
+  .footer-brand img {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .footer-tagline {
+    grid-column: 1;
+    grid-row: 2;
+    width: var(--footer-identity-rail);
+  }
+
+  .footer-heading {
+    grid-column: 2;
+    grid-row: 1;
+    margin-bottom: 0;
+  }
+
+  .footer-links > nav {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .footer-brand .footer-btn {
+    grid-column: 1;
+    grid-row: 3;
+    width: var(--footer-identity-rail);
+    max-width: none;
+    margin-top: 20px;
+    padding-inline: 14px;
+  }
+
+  .footer-meta {
+    grid-column: 2;
+    grid-row: 3;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    justify-content: flex-start;
+    gap: clamp(20px, 2.6vw, 34px);
+    margin-top: 0;
+    padding-top: 20px;
+  }
+
+  .footer-socials {
+    display: grid;
+    grid-template-columns: repeat(2, var(--footer-social-pill-width));
+    gap: 12px;
+    width: auto;
+    flex: 0 0 auto;
+  }
+
+  .social-badge {
+    width: var(--footer-social-pill-width);
+    min-width: var(--footer-social-pill-width);
+  }
+
+  .footer-copyright {
+    flex: 0 0 auto;
+    text-align: left;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 720px) {
+  #start-project {
+    padding-bottom: 42px;
+  }
+
+  .site-footer {
+    padding-top: 36px;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .footer-brand,
+  .footer-links {
+    display: contents;
+  }
+
+  .footer-brand img {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .footer-tagline {
+    grid-column: 1;
+    grid-row: 2;
+    width: min(100%, var(--footer-identity-rail));
+    margin-top: 12px;
+  }
+
+  .footer-heading {
+    grid-column: 1;
+    grid-row: 3;
+    margin-top: 32px;
+    margin-bottom: 18px;
+  }
+
+  .footer-links > nav {
+    grid-column: 1;
+    grid-row: 4;
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .footer-brand .footer-btn {
+    grid-column: 1;
+    grid-row: 5;
+    width: min(100%, 196px);
+    max-width: none;
+    margin-top: 28px;
+    padding-inline: 16px;
+  }
+
+  .footer-meta {
+    grid-column: 1;
+    grid-row: 6;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+    width: 100%;
+    margin-top: 20px;
+    padding-top: 20px;
+  }
+
+  .footer-socials {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, var(--footer-social-pill-width)));
+    gap: 12px;
+    width: 100%;
+  }
+
+  .social-badge {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .footer-copyright {
+    text-align: left;
+    white-space: normal;
+  }
+}
+
+@media (max-width: 360px) {
+  :root {
+    --footer-social-pill-width: 118px;
+  }
+}
