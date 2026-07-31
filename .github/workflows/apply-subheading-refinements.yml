@@ -1,9 +1,13 @@
 name: Apply Subheading Refinements
 
 on:
-  push:
+  pull_request:
     branches:
-      - subheading-copy-and-purpose-audit
+      - main
+    types:
+      - opened
+      - reopened
+      - synchronize
 
 permissions:
   contents: write
@@ -17,6 +21,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: subheading-copy-and-purpose-audit
+          fetch-depth: 0
 
       - name: Apply approved copy and style refinements
         shell: bash
