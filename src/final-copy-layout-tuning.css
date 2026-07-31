@@ -1,0 +1,26 @@
+/* Final copy and hierarchy tuning.
+   Loaded after prior refinements so the changes remain isolated and reversible. */
+
+/* Retire the Start A Project supporting line from the public section. */
+#start-project .inquiry-intro-single .section-tagline {
+  display: none;
+}
+
+#start-project .inquiry-intro-single .section-title-block {
+  gap: 0;
+}
+
+/* Keep the hero supporting statement in the approved two-line composition on
+   desktop and tablet, with the ampersand beginning the second line. */
+@media (min-width: 641px) {
+  .hero-copy .lead {
+    max-width: 29em;
+    text-wrap: pretty;
+  }
+}
+
+/* Reduce the footer navigation heading weight so it supports rather than
+   overpowers the Señor 808 identity hierarchy. */
+.footer-heading {
+  font-weight: 600;
+}
