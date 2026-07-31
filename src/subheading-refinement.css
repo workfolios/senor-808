@@ -1,0 +1,10 @@
+/* Approved subheading hierarchy and Start A Project intro refinement. */
+.section-tagline,
+.hero-copy .lead {
+  font-weight: 400;
+}
+
+.inquiry-intro-single {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 900px;
+}
