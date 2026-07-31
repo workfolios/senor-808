@@ -9,6 +9,7 @@ import './footer-responsive-qa.css';
 import './footer-responsive-final.css';
 import './subheading-refinement.css';
 import './process-consolidation.css';
+import './final-copy-layout-tuning.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
