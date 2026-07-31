@@ -5,6 +5,7 @@ import './index.css';
 import './responsive-polish.css';
 import './footer-alignment.css';
 import './final-visual-refinement.css';
+import './footer-responsive-qa.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
