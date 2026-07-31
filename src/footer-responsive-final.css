@@ -1,0 +1,124 @@
+/* Final responsive footer and tablet header QA pass.
+   Loaded after prior responsive overrides so these adjustments remain isolated and reversible. */
+
+:root {
+  --footer-identity-rail-final: 160px;
+  --footer-social-group-final: 260px;
+}
+
+/* Keep the tablet/mobile header fully pinned and visible at every scroll position. */
+@media (max-width: 920px) {
+  .site-header {
+    position: fixed !important;
+    inset: 0 0 auto 0 !important;
+    top: 0 !important;
+    z-index: 200;
+    transform: none !important;
+    translate: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    backface-visibility: hidden;
+    isolation: isolate;
+  }
+
+  .site-header .nav-row {
+    min-height: 100%;
+  }
+
+  /* Avoid tablet footer collisions with the copyright/action row. */
+  .back-to-top {
+    display: none;
+  }
+}
+
+/* Desktop and tablet: optically align the CTA with the identity copy. */
+@media (min-width: 721px) {
+  .footer-grid {
+    grid-template-columns: minmax(var(--footer-identity-rail-final), 0.7fr) minmax(0, 1.3fr);
+    column-gap: clamp(40px, 7vw, 104px);
+    row-gap: 14px;
+  }
+
+  .footer-tagline {
+    width: var(--footer-identity-rail-final);
+  }
+
+  .footer-brand .footer-btn {
+    width: var(--footer-identity-rail-final);
+    max-width: var(--footer-identity-rail-final);
+    justify-self: start;
+    margin-left: 0;
+    padding-inline: 12px;
+  }
+
+  .footer-meta {
+    gap: clamp(14px, 2vw, 24px);
+  }
+
+  .footer-copyright {
+    font-size: 0.8rem;
+  }
+}
+
+/* Tablet spacing: preserve a compact horizontal footer without crowding. */
+@media (min-width: 721px) and (max-width: 920px) {
+  .site-footer {
+    padding-top: 46px;
+    padding-bottom: 30px;
+  }
+
+  .footer-grid {
+    column-gap: clamp(32px, 5vw, 48px);
+    row-gap: 16px;
+  }
+
+  .footer-links > nav {
+    gap: 10px 20px;
+  }
+
+  .footer-meta {
+    gap: 14px;
+    padding-top: 18px;
+  }
+
+  .footer-copyright {
+    font-size: 0.74rem;
+  }
+}
+
+/* Mobile: keep both social badges on one intentional, evenly spaced row. */
+@media (max-width: 720px) {
+  .footer-brand .footer-btn {
+    width: min(100%, 196px);
+    max-width: 196px;
+  }
+
+  .footer-socials {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: min(100%, var(--footer-social-group-final));
+    max-width: var(--footer-social-group-final);
+  }
+
+  .footer-socials .social-badge {
+    flex: 1 1 0 !important;
+    width: auto !important;
+    min-width: 0 !important;
+    max-width: none;
+    margin: 0;
+  }
+}
+
+@media (max-width: 360px) {
+  :root {
+    --footer-social-group-final: 244px;
+  }
+
+  .footer-socials {
+    gap: 10px;
+  }
+}
