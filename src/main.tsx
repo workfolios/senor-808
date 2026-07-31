@@ -8,6 +8,7 @@ import './final-visual-refinement.css';
 import './footer-responsive-qa.css';
 import './footer-responsive-final.css';
 import './subheading-refinement.css';
+import './process-consolidation.css';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

@@ -532,24 +532,6 @@ export default function App() {
           </div>
         </section>
 
-        <section className="section reveal-on-scroll" id="faq" aria-labelledby="faq-title">
-          <div className="container">
-            <div className="section-intro">
-              <div className="section-title-block">
-                <h2 id="faq-title">Process &amp; Availability</h2>
-                <p className="section-tagline">Clear expectations before a project begins</p>
-              </div>
-              <p className="lead">Commission scope, shipping, studio availability, and delivery requirements are confirmed during inquiry review.</p>
-            </div>
-            <div className="faq-grid">
-              <div className="faq-item">
-                <h3>How do commissions and shipping work?</h3>
-                <p>Commission availability, scope, lead times, delivery method, and shipping requirements are confirmed during inquiry review.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
         <section className="section alt reveal-on-scroll" id="start-project" aria-labelledby="start-title">
           <div className="container">
             <div className="section-intro inquiry-intro inquiry-intro-single">
@@ -709,6 +691,7 @@ export default function App() {
               )}
             </form>
 
+            <p className="inquiry-availability-note">Commission availability, scope, lead times, delivery method, &amp; shipping requirements are confirmed during inquiry review</p>
           </div>
         </section>
       </main>
