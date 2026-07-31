@@ -86,6 +86,17 @@
   }
 }
 
+/* iPad Mini and similar compact tablets: pull the copyright slightly inward. */
+@media (min-width: 721px) and (max-width: 800px) {
+  .footer-meta {
+    gap: 10px;
+  }
+
+  .footer-copyright {
+    margin-left: -6px;
+  }
+}
+
 /* Mobile: keep both social badges on one intentional, evenly spaced row. */
 @media (max-width: 720px) {
   .footer-brand .footer-btn {
