@@ -32,9 +32,6 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Dependency Path Diagnostic
-        run: npm ls brace-expansion nanoid postcss --all
-
       - name: Dependency Security Audit
         run: npm audit --audit-level=high
 
