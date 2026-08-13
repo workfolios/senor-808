@@ -13,13 +13,13 @@ A one-page portfolio for San Antonio visual artist Bob Garcia, known as Señor 8
 - **Framework:** React + Vite
 - **Language:** TypeScript
 - **Runtime:** Node.js 22
-- **Package Manager:** npm 10
+- **Package Manager:** npm 10.9.8
 - **Styling:** Tailwind CSS
 - **Deployment:** GitHub Actions + GitHub Pages
 
 ## Local Setup
 
-1. Use Node.js 22 and npm 10.
+1. Use Node.js 22 and npm 10.9.8.
 2. Install the committed dependency graph:
    ```bash
    npm ci
