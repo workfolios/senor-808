@@ -12,16 +12,19 @@ A one-page portfolio for San Antonio visual artist Bob Garcia, known as Señor 8
 ## Tech Stack
 - **Framework:** React + Vite
 - **Language:** TypeScript
+- **Runtime:** Node.js 22
+- **Package Manager:** npm 10
 - **Styling:** Tailwind CSS
 - **Deployment:** GitHub Actions + GitHub Pages
 
 ## Local Setup
 
-1. Install dependencies:
+1. Use Node.js 22 and npm 10.
+2. Install the committed dependency graph:
    ```bash
-   npm install
+   npm ci
    ```
-2. Start the development server:
+3. Start the development server:
    ```bash
    npm run dev
    ```
