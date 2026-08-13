@@ -1,4 +1,4 @@
-import { chromium } from 'playwright';
+import { chromium, firefox, webkit } from 'playwright';
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
@@ -13,13 +13,52 @@ const viewports = [
   { name: 'tablet-landscape-1024', width: 1024, height: 768 },
 ];
 
+const browserEngines = [
+  { name: 'chromium', launcher: chromium },
+  { name: 'firefox', launcher: firefox },
+  { name: 'webkit', launcher: webkit },
+];
+
 await fs.rm(outputDir, { recursive: true, force: true });
 await fs.mkdir(outputDir, { recursive: true });
 
-const browser = await chromium.launch({ headless: true });
 const findings = [];
+const runtimeIssues = [];
+const engineResults = [];
 
-async function preparePage(page) {
+function collectRuntimeIssues(page, contextLabel) {
+  page.on('console', (message) => {
+    if (message.type() === 'error') {
+      runtimeIssues.push({
+        context: contextLabel,
+        type: 'console-error',
+        message: message.text(),
+      });
+    }
+  });
+
+  page.on('pageerror', (error) => {
+    runtimeIssues.push({
+      context: contextLabel,
+      type: 'page-error',
+      message: error.message,
+    });
+  });
+
+  page.on('requestfailed', (request) => {
+    runtimeIssues.push({
+      context: contextLabel,
+      type: 'request-failed',
+      message: request.failure()?.errorText || 'Unknown request failure',
+      method: request.method(),
+      resourceType: request.resourceType(),
+      url: request.url(),
+    });
+  });
+}
+
+async function preparePage(page, contextLabel) {
+  collectRuntimeIssues(page, contextLabel);
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto(targetUrl, { waitUntil: 'networkidle', timeout: 60_000 });
   await page.addStyleTag({
@@ -81,13 +120,13 @@ async function isolateSectionCapture(page) {
   });
 }
 
-async function captureFullPage(viewport) {
+async function captureFullPage(browser, viewport) {
   const context = await browser.newContext({
     viewport: { width: viewport.width, height: viewport.height },
     deviceScaleFactor: 1,
   });
   const page = await context.newPage();
-  await preparePage(page);
+  await preparePage(page, `chromium:${viewport.name}:full-page`);
 
   const layout = await page.evaluate(() => {
     const images = Array.from(document.images);
@@ -115,19 +154,19 @@ async function captureFullPage(viewport) {
   await context.close();
 }
 
-async function captureMobileMenu() {
+async function captureMobileMenu(browser) {
   const context = await browser.newContext({ viewport: { width: 360, height: 740 } });
   const page = await context.newPage();
-  await preparePage(page);
+  await preparePage(page, 'chromium:mobile-360:navigation-open');
   await page.locator('.mobile-toggle').click();
   await page.screenshot({ path: path.join(outputDir, 'mobile-360-navigation-open.png') });
   await context.close();
 }
 
-async function captureWorkStates() {
+async function captureWorkStates(browser) {
   const context = await browser.newContext({ viewport: { width: 768, height: 1024 } });
   const page = await context.newPage();
-  await preparePage(page);
+  await preparePage(page, 'chromium:tablet-768:work-states');
 
   const workSection = page.locator('#work');
   await workSection.scrollIntoViewIfNeeded();
@@ -143,10 +182,10 @@ async function captureWorkStates() {
   await context.close();
 }
 
-async function captureInquiryStates() {
+async function captureInquiryStates(browser) {
   const context = await browser.newContext({ viewport: { width: 768, height: 1024 } });
   const page = await context.newPage();
-  await preparePage(page);
+  await preparePage(page, 'chromium:tablet-768:inquiry-states');
 
   const inquirySection = page.locator('#start-project');
   await inquirySection.scrollIntoViewIfNeeded();
@@ -165,10 +204,10 @@ async function captureInquiryStates() {
   await context.close();
 }
 
-async function captureFooter() {
+async function captureFooter(browser) {
   const context = await browser.newContext({ viewport: { width: 820, height: 1180 } });
   const page = await context.newPage();
-  await preparePage(page);
+  await preparePage(page, 'chromium:tablet-820:footer');
 
   const footer = page.locator('footer');
   await footer.scrollIntoViewIfNeeded();
@@ -178,54 +217,149 @@ async function captureFooter() {
   await context.close();
 }
 
+async function runEngineSmoke(engine) {
+  const browser = await engine.launcher.launch({ headless: true });
+  const context = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+  const page = await context.newPage();
+  const result = {
+    engine: engine.name,
+    passed: false,
+    viewportWidth: null,
+    documentWidth: null,
+    horizontalOverflow: null,
+    failedImages: [],
+    checks: [],
+    error: null,
+  };
+
+  try {
+    await preparePage(page, `${engine.name}:principal-flow`);
+
+    await page.getByRole('heading', { name: 'Visual Artist & Audio Storyteller' }).waitFor({ state: 'visible' });
+    result.checks.push('hero');
+
+    await page.getByRole('button', { name: 'Mixed Media' }).click();
+    await page.waitForTimeout(350);
+    await page.locator('.work-card:not(.skeleton-card)').first().click();
+    await page.locator('.lightbox.active').waitFor({ state: 'visible' });
+    await page.keyboard.press('Escape');
+    await page.locator('.lightbox.active').waitFor({ state: 'hidden' });
+    result.checks.push('filter-and-lightbox');
+
+    await page.getByRole('button', { name: 'Commissioned Artwork' }).click();
+    await page.locator('input[name="display_name"]').fill(`${engine.name} QA Test`);
+    await page.locator('input[name="display_email"]').fill('qa@example.com');
+    await page.locator('textarea[name="display_details"]').fill('Cross-browser principal-flow validation for the guided project inquiry form.');
+    await page.getByRole('button', { name: 'Review Inquiry' }).click();
+    await page.getByRole('button', { name: 'Send Project Inquiry' }).waitFor({ state: 'visible' });
+    result.checks.push('inquiry-review');
+
+    const layout = await page.evaluate(() => {
+      const images = Array.from(document.images);
+      const failedImages = images
+        .filter((image) => !image.complete || image.naturalWidth === 0)
+        .map((image) => image.currentSrc || image.src || image.alt || 'Unknown image');
+
+      return {
+        viewportWidth: document.documentElement.clientWidth,
+        documentWidth: document.documentElement.scrollWidth,
+        horizontalOverflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
+        failedImages,
+      };
+    });
+
+    Object.assign(result, layout);
+    result.passed = !layout.horizontalOverflow && layout.failedImages.length === 0;
+  } catch (error) {
+    result.error = error instanceof Error ? error.message : String(error);
+  } finally {
+    engineResults.push(result);
+    await context.close();
+    await browser.close();
+  }
+}
+
+const screenshotBrowser = await chromium.launch({ headless: true });
+
 try {
   for (const viewport of viewports) {
-    await captureFullPage(viewport);
+    await captureFullPage(screenshotBrowser, viewport);
   }
 
-  await captureMobileMenu();
-  await captureWorkStates();
-  await captureInquiryStates();
-  await captureFooter();
-
-  const generatedAt = new Date().toISOString();
-  const reportLines = [
-    '# Señor 808 Responsive QA Capture',
-    '',
-    `Generated: ${generatedAt}`,
-    `Target: ${targetUrl}`,
-    '',
-    '## Layout And Image Check',
-    '',
-    '| Viewport | CSS Width | Document Width | Overflow | Images Loaded |',
-    '|---|---:|---:|---|---:|',
-    ...findings.map((item) =>
-      `| ${item.viewport} | ${item.viewportWidth}px | ${item.documentWidth}px | ${item.horizontalOverflow ? 'YES' : 'No'} | ${item.loadedImageCount}/${item.imageCount} |`,
-    ),
-    '',
-    '## Image Failures',
-    '',
-    ...findings.flatMap((item) =>
-      item.failedImages.length > 0
-        ? [`- ${item.viewport}: ${item.failedImages.join(', ')}`]
-        : [`- ${item.viewport}: None`],
-    ),
-    '',
-    '## Captured States',
-    '',
-    '- Full-page views at 360, 390, 768, 820, and 1024 CSS pixels',
-    '- Mobile navigation open',
-    '- Work filter set to Mixed Media',
-    '- Artwork lightbox open',
-    '- Guided inquiry steps 1, 2, and 3',
-    '- Tablet footer layout',
-    '',
-    'Review these images manually before establishing any visual-regression baseline.',
-    '',
-  ];
-
-  await fs.writeFile(path.join(outputDir, 'README.md'), reportLines.join('\n'), 'utf8');
-  await fs.writeFile(path.join(outputDir, 'layout-findings.json'), JSON.stringify(findings, null, 2), 'utf8');
+  await captureMobileMenu(screenshotBrowser);
+  await captureWorkStates(screenshotBrowser);
+  await captureInquiryStates(screenshotBrowser);
+  await captureFooter(screenshotBrowser);
 } finally {
-  await browser.close();
+  await screenshotBrowser.close();
+}
+
+for (const engine of browserEngines) {
+  await runEngineSmoke(engine);
+}
+
+const generatedAt = new Date().toISOString();
+const reportLines = [
+  '# Señor 808 Responsive QA Capture',
+  '',
+  `Generated: ${generatedAt}`,
+  `Target: ${targetUrl}`,
+  '',
+  '## Layout And Image Check',
+  '',
+  '| Viewport | CSS Width | Document Width | Overflow | Images Loaded |',
+  '|---|---:|---:|---|---:|',
+  ...findings.map((item) =>
+    `| ${item.viewport} | ${item.viewportWidth}px | ${item.documentWidth}px | ${item.horizontalOverflow ? 'YES' : 'No'} | ${item.loadedImageCount}/${item.imageCount} |`,
+  ),
+  '',
+  '## Cross-Browser Principal-Flow Check',
+  '',
+  '| Engine | Result | Overflow | Failed Images | Checks |',
+  '|---|---|---|---:|---|',
+  ...engineResults.map((item) =>
+    `| ${item.engine} | ${item.passed ? 'Pass' : 'FAIL'} | ${item.horizontalOverflow ? 'YES' : 'No'} | ${item.failedImages.length} | ${item.checks.join(', ') || 'None'} |`,
+  ),
+  '',
+  '## Image Failures',
+  '',
+  ...findings.flatMap((item) =>
+    item.failedImages.length > 0
+      ? [`- ${item.viewport}: ${item.failedImages.join(', ')}`]
+      : [`- ${item.viewport}: None`],
+  ),
+  '',
+  '## Runtime Errors And Failed Requests',
+  '',
+  ...(runtimeIssues.length > 0
+    ? runtimeIssues.map((item) => `- ${item.context} | ${item.type}: ${item.message}${item.url ? ` | ${item.url}` : ''}`)
+    : ['- None']),
+  '',
+  '## Captured States',
+  '',
+  '- Full-page Chromium views at 360, 390, 768, 820, and 1024 CSS pixels',
+  '- Mobile navigation open',
+  '- Work filter set to Mixed Media',
+  '- Artwork lightbox open',
+  '- Guided inquiry steps 1, 2, and 3',
+  '- Tablet footer layout',
+  '- Principal-flow smoke validation in Chromium, Firefox, and WebKit',
+  '- Console errors, uncaught page errors, and failed network requests',
+  '',
+  'Review the screenshots manually before establishing any visual-regression baseline.',
+  '',
+];
+
+await fs.writeFile(path.join(outputDir, 'README.md'), reportLines.join('\n'), 'utf8');
+await fs.writeFile(path.join(outputDir, 'layout-findings.json'), JSON.stringify(findings, null, 2), 'utf8');
+await fs.writeFile(path.join(outputDir, 'cross-browser-findings.json'), JSON.stringify(engineResults, null, 2), 'utf8');
+await fs.writeFile(path.join(outputDir, 'runtime-issues.json'), JSON.stringify(runtimeIssues, null, 2), 'utf8');
+
+const failedLayout = findings.some((item) => item.horizontalOverflow || item.failedImages.length > 0);
+const failedEngine = engineResults.some((item) => !item.passed);
+
+if (runtimeIssues.length > 0 || failedLayout || failedEngine) {
+  throw new Error(
+    `Responsive QA failed: ${runtimeIssues.length} runtime issue(s), ${failedLayout ? 'layout/image failures present' : 'layout/image checks passed'}, ${failedEngine ? 'cross-browser failure present' : 'cross-browser checks passed'}.`,
+  );
 }
