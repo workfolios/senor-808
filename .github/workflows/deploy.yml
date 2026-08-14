@@ -61,8 +61,63 @@ jobs:
 
     runs-on: ubuntu-latest
     needs: build
+    outputs:
+      page_url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4
+
+  live-verify:
+    if: github.event_name == 'push'
+    permissions:
+      contents: read
+    runs-on: ubuntu-latest
+    needs: deploy
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install Project Dependencies
+        run: npm ci
+
+      - name: Install Playwright For Live Verification
+        run: |
+          npm install --no-save --package-lock=false playwright@1.55.0
+          npx playwright install --with-deps chromium firefox webkit
+
+      - name: Wait For Public Deployment
+        env:
+          TARGET_URL: ${{ needs.deploy.outputs.page_url }}
+        run: |
+          for attempt in {1..30}; do
+            if curl --fail --silent --show-error "$TARGET_URL" > /dev/null; then
+              exit 0
+            fi
+            sleep 2
+          done
+          echo "Public deployment did not become reachable: $TARGET_URL"
+          exit 1
+
+      - name: Verify Public Deployment Across Browsers
+        env:
+          TARGET_URL: ${{ needs.deploy.outputs.page_url }}
+        run: node scripts/capture-responsive-qa.mjs
+
+      - name: Upload Live Verification Evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: senor-808-live-verification-${{ github.run_number }}
+          path: artifacts/responsive-qa
+          if-no-files-found: error
+          retention-days: 14
