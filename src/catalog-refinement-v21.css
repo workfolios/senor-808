@@ -65,18 +65,19 @@ body.nav-overlay-open {
   transform: translateY(-2px) scale(.992);
 }
 
-/* RO-092: do not make hover elevation or artwork zoom a touch-only side effect. */
+/* RO-092: do not make hover elevation or artwork zoom a touch-only side effect.
+   Preserve the active/pressed feedback while a coarse-pointer press is in progress. */
 @media (hover: none), (pointer: coarse) {
-  .btn:hover,
-  .nav-cta:hover,
-  .footer-btn:hover,
-  .work-card:hover,
-  .inquiry-option:hover,
-  .social-badge:hover {
+  .btn:hover:not(:active),
+  .nav-cta:hover:not(:active),
+  .footer-btn:hover:not(:active),
+  .work-card:hover:not(:active),
+  .inquiry-option:hover:not(:active),
+  .social-badge:hover:not(:active) {
     transform: none;
   }
 
-  .work-card:hover img {
+  .work-card:hover:not(:active) img {
     transform: none;
   }
 }
