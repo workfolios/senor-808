@@ -111,7 +111,7 @@ jobs:
       - name: Verify Public Deployment Across Browsers
         env:
           TARGET_URL: ${{ needs.deploy.outputs.page_url }}
-        run: node scripts/capture-responsive-qa.mjs
+        run: node scripts/run-responsive-qa.mjs
 
       - name: Upload Live Verification Evidence
         if: always()
