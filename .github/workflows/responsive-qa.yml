@@ -10,6 +10,7 @@ on:
     paths:
       - .github/workflows/responsive-qa.yml
       - scripts/capture-responsive-qa.mjs
+      - scripts/run-responsive-qa.mjs
   workflow_dispatch:
     inputs:
       site_url:
@@ -67,7 +68,7 @@ jobs:
       - name: Capture Responsive And Cross-Browser QA
         env:
           TARGET_URL: ${{ github.event_name == 'workflow_dispatch' && inputs.site_url || 'http://127.0.0.1:4173/' }}
-        run: node scripts/capture-responsive-qa.mjs
+        run: node scripts/run-responsive-qa.mjs
 
       - name: Upload Responsive QA Review Pack
         if: always()
