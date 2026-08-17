@@ -1,8 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://workfolios.github.io/senor-808/</loc>
-    <changefreq>monthly</changefreq>
-    <priority>1.0</priority>
+    <lastmod>2026-08-17</lastmod>
+    <image:image>
+      <image:loc>https://workfolios.github.io/senor-808/assets/hero/assets_hero_hero-v1.png</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://workfolios.github.io/senor-808/assets/hero/assets_hero_hero-v3.png</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://workfolios.github.io/senor-808/assets/headshots/assets_headshots_headshot-01.png</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://workfolios.github.io/senor-808/assets/work/assets_work_after-hours-frequency.png</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://workfolios.github.io/senor-808/assets/work/assets_work_rose-circuit.png</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://workfolios.github.io/senor-808/assets/work/assets_work_never-apologize.png</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://workfolios.github.io/senor-808/assets/work/assets_work_frequency-grid.png</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://workfolios.github.io/senor-808/assets/work/assets_work_direct-gaze.png</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://workfolios.github.io/senor-808/assets/work/assets_work_orbit-porttrait.png</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://workfolios.github.io/senor-808/assets/work/assets_work_halo-drift.png</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://workfolios.github.io/senor-808/assets/work/assets_work_vector-rhythm.png</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://workfolios.github.io/senor-808/assets/work/assets_work_smoke-signal.png</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://workfolios.github.io/senor-808/assets/work/assets_work_crimson-bloom.png</image:loc>
+    </image:image>
   </url>
 </urlset>
