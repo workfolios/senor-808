@@ -12,6 +12,8 @@ import './process-consolidation.css';
 import './final-copy-layout-tuning.css';
 import './catalog-refinement-v21.css';
 import './catalog-refinement-v21.ts';
+import './selected-work-refinement.css';
+import './selected-work-refinement.ts';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
