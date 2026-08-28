@@ -14,6 +14,7 @@ const RELEASE_GROUP = '2026-08-28';
 const works = portfolioData as PortfolioItem[];
 const recentWorks = works.filter((work) => work.releaseGroup === RELEASE_GROUP);
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+let lastRailTrigger: HTMLButtonElement | null = null;
 
 const getAssetPath = (path: string) => `${import.meta.env.BASE_URL}${path.replace(/^\/+/, '')}`;
 
@@ -28,9 +29,11 @@ const getGridCards = () =>
 const getCardTitle = (card: HTMLButtonElement) =>
   card.querySelector<HTMLElement>('.work-meta strong')?.textContent?.trim() || '';
 
-const openGridArtwork = (title: string) => {
+const openGridArtwork = (title: string, railTrigger?: HTMLButtonElement) => {
   const target = getGridCards().find((card) => getCardTitle(card) === title);
-  target?.click();
+  if (!target) return;
+  lastRailTrigger = railTrigger || null;
+  target.click();
 };
 
 const updateFilteredLightboxCounter = () => {
@@ -55,6 +58,7 @@ const navigateFilteredLightbox = (direction: number) => {
   if (currentIndex < 0 || cards.length === 0) return;
 
   const nextIndex = (currentIndex + direction + cards.length) % cards.length;
+  lastRailTrigger = null;
   cards[nextIndex]?.click();
   window.requestAnimationFrame(updateFilteredLightboxCounter);
 };
@@ -84,7 +88,7 @@ const createRailCard = (work: PortfolioItem) => {
 
   meta.append(title, category);
   card.append(image, meta);
-  card.addEventListener('click', () => openGridArtwork(work.title));
+  card.addEventListener('click', () => openGridArtwork(work.title, card));
   return card;
 };
 
@@ -204,6 +208,7 @@ const initializeGalleryRefinement = () => {
     section.classList.toggle('gallery-filtered-view', !isAll);
     shell.hidden = !isAll;
     legacyHeading.hidden = !isAll;
+    if (!isAll) lastRailTrigger = null;
     if (isAll) window.requestAnimationFrame(updateRailState);
     window.requestAnimationFrame(updateFilteredLightboxCounter);
   };
@@ -221,6 +226,16 @@ const initializeGalleryRefinement = () => {
     attributes: true,
     attributeFilter: ['aria-pressed', 'aria-busy'],
   });
+
+  const lightbox = document.querySelector<HTMLElement>('.lightbox');
+  if (lightbox) {
+    new MutationObserver(() => {
+      if (lightbox.getAttribute('aria-hidden') !== 'true' || !lastRailTrigger) return;
+      const trigger = lastRailTrigger;
+      lastRailTrigger = null;
+      window.setTimeout(() => trigger.focus(), 20);
+    }).observe(lightbox, { attributes: true, attributeFilter: ['aria-hidden'] });
+  }
 
   document.addEventListener(
     'click',
