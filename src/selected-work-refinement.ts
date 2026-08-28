@@ -62,7 +62,7 @@ const navigateFilteredLightbox = (direction: number) => {
 const createRailCard = (work: PortfolioItem) => {
   const card = document.createElement('button');
   card.type = 'button';
-  card.className = 'work-card recent-addition-card';
+  card.className = 'recent-addition-card';
   card.setAttribute('aria-label', `Open ${work.title}`);
   card.dataset.workTitle = work.title;
 
