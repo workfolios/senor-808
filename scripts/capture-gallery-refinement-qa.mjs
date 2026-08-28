@@ -104,6 +104,8 @@ try {
 
     await page.locator('.work-grid .work-card:not(.skeleton-card)').first().click();
     await page.locator('.lightbox.active').waitFor({ state: 'visible' });
+    await page.waitForTimeout(80);
+    checks.push(['filtered initial lightbox counter', (await page.locator('.lightbox figcaption > span').textContent())?.trim() === '1 / 20']);
     await page.getByRole('button', { name: 'Next artwork' }).click();
     await page.waitForTimeout(80);
     checks.push(['filtered next stays in category', (await page.locator('#lightbox-title').textContent())?.trim() === 'Pressure Loop']);
