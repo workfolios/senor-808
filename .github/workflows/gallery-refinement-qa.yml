@@ -1,0 +1,66 @@
+name: Selected Work Gallery QA
+
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  gallery-qa:
+    name: Validate Selected Work Gallery Refinement
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Setup Node
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install Project Dependencies
+        run: npm ci
+
+      - name: TypeScript Check
+        run: npm run lint
+
+      - name: Build Site
+        run: npm run build
+
+      - name: Install Playwright For Gallery QA
+        run: |
+          npm install --no-save --package-lock=false playwright@1.55.0
+          npx playwright install --with-deps chromium
+
+      - name: Start Local Production Preview
+        run: |
+          nohup npm run preview -- --host 127.0.0.1 --port 4173 > /tmp/senor-808-gallery-preview.log 2>&1 &
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:4173/ > /dev/null; then
+              exit 0
+            fi
+            sleep 1
+          done
+          cat /tmp/senor-808-gallery-preview.log
+          exit 1
+
+      - name: Capture Gallery Responsive QA
+        env:
+          TARGET_URL: http://127.0.0.1:4173/
+        run: node scripts/capture-gallery-refinement-qa.mjs
+
+      - name: Upload Gallery QA Review Pack
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: senor-808-gallery-refinement-qa-${{ github.run_number }}
+          path: artifacts/gallery-refinement-qa
+          if-no-files-found: error
+          retention-days: 14
