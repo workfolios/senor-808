@@ -45,7 +45,10 @@ const updateFilteredLightboxCounter = () => {
 
   const cards = getGridCards();
   const index = cards.findIndex((card) => getCardTitle(card) === title);
-  if (index >= 0) counter.textContent = `${index + 1} / ${cards.length}`;
+  if (index < 0) return;
+
+  const desired = `${index + 1} / ${cards.length}`;
+  if (counter.textContent?.trim() !== desired) counter.textContent = desired;
 };
 
 const navigateFilteredLightbox = (direction: number) => {
@@ -229,12 +232,30 @@ const initializeGalleryRefinement = () => {
 
   const lightbox = document.querySelector<HTMLElement>('.lightbox');
   if (lightbox) {
+    let lightboxSyncQueued = false;
+    const queueLightboxSync = () => {
+      if (lightboxSyncQueued) return;
+      lightboxSyncQueued = true;
+      window.requestAnimationFrame(() => {
+        lightboxSyncQueued = false;
+        updateFilteredLightboxCounter();
+      });
+    };
+
     new MutationObserver(() => {
-      if (lightbox.getAttribute('aria-hidden') !== 'true' || !lastRailTrigger) return;
-      const trigger = lastRailTrigger;
-      lastRailTrigger = null;
-      window.setTimeout(() => trigger.focus(), 20);
-    }).observe(lightbox, { attributes: true, attributeFilter: ['aria-hidden'] });
+      if (lightbox.getAttribute('aria-hidden') === 'true' && lastRailTrigger) {
+        const trigger = lastRailTrigger;
+        lastRailTrigger = null;
+        window.setTimeout(() => trigger.focus(), 20);
+      }
+      queueLightboxSync();
+    }).observe(lightbox, {
+      attributes: true,
+      attributeFilter: ['aria-hidden', 'class'],
+      childList: true,
+      subtree: true,
+      characterData: true,
+    });
   }
 
   document.addEventListener(
