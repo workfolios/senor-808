@@ -3,7 +3,7 @@
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://workfolios.github.io/senor-808/</loc>
-    <lastmod>2026-08-17</lastmod>
+    <lastmod>2026-08-28</lastmod>
     <image:image>
       <image:loc>https://workfolios.github.io/senor-808/assets/hero/assets_hero_hero-v1.png</image:loc>
     </image:image>
@@ -42,6 +42,24 @@
     </image:image>
     <image:image>
       <image:loc>https://workfolios.github.io/senor-808/assets/work/assets_work_crimson-bloom.png</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://workfolios.github.io/senor-808/assets/work/assets_work_prism-relay.opt.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://workfolios.github.io/senor-808/assets/work/assets_work_pressure-loop.opt.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://workfolios.github.io/senor-808/assets/work/assets_work_blue-witness.opt.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://workfolios.github.io/senor-808/assets/work/assets_work_night-structure.opt.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://workfolios.github.io/senor-808/assets/work/assets_work_red-thread.opt.webp</image:loc>
+    </image:image>
+    <image:image>
+      <image:loc>https://workfolios.github.io/senor-808/assets/work/assets_work_three-channels.opt.webp</image:loc>
     </image:image>
   </url>
 </urlset>
