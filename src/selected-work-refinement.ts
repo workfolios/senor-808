@@ -7,12 +7,11 @@ type PortfolioItem = {
   title: string;
   cat: string;
   year?: string;
-  releaseGroup?: string;
 };
 
-const RELEASE_GROUP = '2026-08-28';
+const RAIL_WORK_IDS = [17, 11, 12, 13, 14, 15, 16, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28];
 const works = portfolioData as PortfolioItem[];
-const recentWorks = works.filter((work) => work.releaseGroup === RELEASE_GROUP);
+const railWorks = RAIL_WORK_IDS.map((id) => works.find((work) => work.id === id)).filter(Boolean) as PortfolioItem[];
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 let lastRailTrigger: HTMLButtonElement | null = null;
 
@@ -69,7 +68,7 @@ const navigateFilteredLightbox = (direction: number) => {
 const createRailCard = (work: PortfolioItem) => {
   const card = document.createElement('button');
   card.type = 'button';
-  card.className = 'recent-addition-card';
+  card.className = 'selected-work-rail-card';
   card.setAttribute('aria-label', `Open ${work.title}`);
   card.dataset.workTitle = work.title;
 
@@ -95,24 +94,12 @@ const createRailCard = (work: PortfolioItem) => {
   return card;
 };
 
-const createGalleryChrome = (section: HTMLElement, grid: HTMLElement) => {
-  const shell = document.createElement('section');
-  shell.className = 'recent-additions-shell';
-  shell.setAttribute('aria-labelledby', 'recent-additions-title');
+const createGalleryRail = (grid: HTMLElement) => {
+  const shell = document.createElement('div');
+  shell.className = 'selected-work-rail-shell';
 
-  const header = document.createElement('div');
-  header.className = 'gallery-subsection-header';
-
-  const headingBlock = document.createElement('div');
-  headingBlock.className = 'gallery-subsection-copy';
-
-  const heading = document.createElement('h3');
-  heading.id = 'recent-additions-title';
-  heading.textContent = 'Recent Portfolio Additions';
-
-  const summary = document.createElement('p');
-  summary.textContent = `August 28, 2026 release · ${recentWorks.length} works`;
-  headingBlock.append(heading, summary);
+  const toolbar = document.createElement('div');
+  toolbar.className = 'gallery-rail-toolbar';
 
   const controls = document.createElement('div');
   controls.className = 'gallery-rail-controls';
@@ -120,7 +107,7 @@ const createGalleryChrome = (section: HTMLElement, grid: HTMLElement) => {
   const previous = document.createElement('button');
   previous.type = 'button';
   previous.className = 'gallery-rail-control';
-  previous.setAttribute('aria-label', 'Scroll recent artwork backward');
+  previous.setAttribute('aria-label', 'Scroll artwork backward');
   previous.textContent = '←';
 
   const status = document.createElement('span');
@@ -130,36 +117,27 @@ const createGalleryChrome = (section: HTMLElement, grid: HTMLElement) => {
   const next = document.createElement('button');
   next.type = 'button';
   next.className = 'gallery-rail-control';
-  next.setAttribute('aria-label', 'Scroll recent artwork forward');
+  next.setAttribute('aria-label', 'Scroll artwork forward');
   next.textContent = '→';
 
   controls.append(previous, status, next);
-  header.append(headingBlock, controls);
+  toolbar.append(controls);
 
   const viewport = document.createElement('div');
-  viewport.className = 'recent-additions-viewport';
+  viewport.className = 'selected-work-rail-viewport';
   viewport.setAttribute('role', 'region');
-  viewport.setAttribute('aria-label', 'Recent portfolio additions');
+  viewport.setAttribute('aria-label', 'Selected artwork showcase');
 
   const track = document.createElement('div');
-  track.className = 'recent-additions-track';
-  recentWorks.forEach((work) => track.append(createRailCard(work)));
+  track.className = 'selected-work-rail-track';
+  railWorks.forEach((work) => track.append(createRailCard(work)));
   viewport.append(track);
 
-  shell.append(header, viewport);
-
-  const legacyHeading = document.createElement('div');
-  legacyHeading.className = 'legacy-gallery-heading';
-  const legacyTitle = document.createElement('h3');
-  legacyTitle.textContent = 'More Selected Work';
-  const legacySummary = document.createElement('p');
-  legacySummary.textContent = 'Earlier portfolio selection · 10 works';
-  legacyHeading.append(legacyTitle, legacySummary);
-
-  grid.before(shell, legacyHeading);
+  shell.append(toolbar, viewport);
+  grid.before(shell);
 
   const updateRailState = () => {
-    const cards = Array.from(track.querySelectorAll<HTMLElement>('.recent-addition-card'));
+    const cards = Array.from(track.querySelectorAll<HTMLElement>('.selected-work-rail-card'));
     if (cards.length === 0) return;
     const firstCard = cards[0];
     const styles = window.getComputedStyle(track);
@@ -186,7 +164,7 @@ const createGalleryChrome = (section: HTMLElement, grid: HTMLElement) => {
   new ResizeObserver(updateRailState).observe(viewport);
   window.requestAnimationFrame(updateRailState);
 
-  return { shell, legacyHeading, updateRailState };
+  return { shell, updateRailState };
 };
 
 const initializeGalleryRefinement = () => {
@@ -201,7 +179,7 @@ const initializeGalleryRefinement = () => {
   section.dataset.galleryRefinement = 'ready';
   section.classList.add('gallery-refinement-active');
 
-  const { shell, legacyHeading, updateRailState } = createGalleryChrome(section, grid);
+  const { shell, updateRailState } = createGalleryRail(grid);
 
   let syncQueued = false;
   const syncLayout = () => {
@@ -210,7 +188,6 @@ const initializeGalleryRefinement = () => {
     section.classList.toggle('gallery-all-view', isAll);
     section.classList.toggle('gallery-filtered-view', !isAll);
     shell.hidden = !isAll;
-    legacyHeading.hidden = !isAll;
     if (!isAll) lastRailTrigger = null;
     if (isAll) window.requestAnimationFrame(updateRailState);
     window.requestAnimationFrame(updateFilteredLightboxCounter);
@@ -287,4 +264,23 @@ const initializeGalleryRefinement = () => {
   syncLayout();
 };
 
+const initializeSignatureMark = () => {
+  const portrait = document.querySelector<HTMLElement>('#about .portrait-card');
+  if (!portrait) {
+    window.requestAnimationFrame(initializeSignatureMark);
+    return;
+  }
+  if (portrait.querySelector('.portrait-signature-mark')) return;
+
+  portrait.classList.add('portrait-card-signature-enabled');
+  const mark = document.createElement('img');
+  mark.className = 'portrait-signature-mark';
+  mark.src = getAssetPath('/assets/work/assets_work_808-emblem.opt.webp');
+  mark.alt = 'Señor 808 signature emblem';
+  mark.loading = 'lazy';
+  mark.decoding = 'async';
+  portrait.append(mark);
+};
+
 initializeGalleryRefinement();
+initializeSignatureMark();
