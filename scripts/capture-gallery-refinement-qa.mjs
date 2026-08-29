@@ -51,13 +51,14 @@ const getMetrics = async (page) => page.evaluate(() => {
   const imageFailures = Array.from(document.images).filter((image) => !image.complete || image.naturalWidth === 0);
   const galleryText = work?.textContent?.toLowerCase() || '';
   const forbiddenPublicPhrases = ['recent portfolio additions', 'august 28', 'release ·', 'earlier portfolio selection', 'more selected work'];
-  const signature = document.querySelector('.portrait-signature-mark');
-  const portrait = document.querySelector('#about .portrait-card');
-  const signatureRect = signature?.getBoundingClientRect();
-  const portraitRect = portrait?.getBoundingClientRect();
-  const signatureInsidePortrait = Boolean(signatureRect && portraitRect &&
-    signatureRect.left >= portraitRect.left - 1 && signatureRect.right <= portraitRect.right + 1 &&
-    signatureRect.top >= portraitRect.top - 1 && signatureRect.bottom <= portraitRect.bottom + 1);
+  const portraitSignature = document.querySelector('#about .portrait-signature-mark');
+  const footerEmblem = document.querySelector('.footer-signature-emblem');
+  const footerGrid = document.querySelector('.site-footer .footer-grid');
+  const footerEmblemRect = footerEmblem?.getBoundingClientRect();
+  const footerGridRect = footerGrid?.getBoundingClientRect();
+  const footerEmblemInsideGrid = Boolean(footerEmblemRect && footerGridRect &&
+    footerEmblemRect.left >= footerGridRect.left - 1 && footerEmblemRect.right <= footerGridRect.right + 1 &&
+    footerEmblemRect.top >= footerGridRect.top - 1 && footerEmblemRect.bottom <= footerGridRect.bottom + 1);
   const railIds = railCards.map((card) => Number(card.dataset.workId));
   const gridVisibleIds = visibleGridCards.map((card) => Number(card.dataset.workId));
   const combinedIds = [...railIds, ...gridVisibleIds];
@@ -78,21 +79,34 @@ const getMetrics = async (page) => page.evaluate(() => {
     firstRowCount,
     imageFailureCount: imageFailures.length,
     chronologyLanguageAbsent: forbiddenPublicPhrases.every((phrase) => !galleryText.includes(phrase)),
-    signaturePresent: Boolean(signature),
-    signatureLoaded: signature instanceof HTMLImageElement ? signature.complete && signature.naturalWidth > 0 : false,
-    signatureSrcCorrect: signature instanceof HTMLImageElement ? signature.src.includes('assets_work_808-emblem.opt.webp') : false,
-    signatureAltCorrect: signature instanceof HTMLImageElement ? signature.alt === 'Señor 808 signature emblem' : false,
-    signatureInsidePortrait,
+    portraitSignatureAbsent: !portraitSignature,
+    footerEmblemPresent: Boolean(footerEmblem),
+    footerEmblemLoaded: footerEmblem instanceof HTMLImageElement ? footerEmblem.complete && footerEmblem.naturalWidth > 0 : false,
+    footerEmblemSrcCorrect: footerEmblem instanceof HTMLImageElement ? footerEmblem.src.includes('assets_work_808-emblem.opt.webp') : false,
+    footerEmblemDecorative: footerEmblem instanceof HTMLImageElement ? footerEmblem.alt === '' && footerEmblem.getAttribute('aria-hidden') === 'true' : false,
+    footerEmblemInsideGrid,
   };
 });
 
 const getBioMetrics = async (page) => page.evaluate(() => {
   const card = document.querySelector('.bio-modal-card');
+  const top = document.querySelector('.bio-modal-card .modal-top');
   const body = document.querySelector('.bio-modal-body');
-  const endcap = document.querySelector('.bio-signature-endcap');
+  const emblem = document.querySelector('.bio-header-emblem');
+  const title = document.querySelector('#bioTitle');
+  const close = document.querySelector('.bio-modal-card .modal-close');
   const rect = card?.getBoundingClientRect();
+  const topRect = top?.getBoundingClientRect();
+  const emblemRect = emblem?.getBoundingClientRect();
+  const titleRect = title?.getBoundingClientRect();
+  const closeRect = close?.getBoundingClientRect();
   const bodyStyles = body ? getComputedStyle(body) : null;
   const text = body?.textContent || '';
+  const headerEmblemInsideTop = Boolean(topRect && emblemRect &&
+    emblemRect.left >= topRect.left - 1 && emblemRect.right <= topRect.right + 1 &&
+    emblemRect.top >= topRect.top - 1 && emblemRect.bottom <= topRect.bottom + 1);
+  const headerItemsDoNotOverlap = Boolean(titleRect && emblemRect && closeRect &&
+    titleRect.right <= emblemRect.left + 1 && emblemRect.right <= closeRect.left + 1);
   return {
     headings: Array.from(document.querySelectorAll('.bio-modal-section h3')).map((heading) => heading.textContent?.trim() || ''),
     hasInterpretiveLineage: text.includes('interpretive lineage'),
@@ -103,10 +117,13 @@ const getBioMetrics = async (page) => page.evaluate(() => {
     bodyScrollEnabled: Boolean(bodyStyles && ['auto', 'scroll'].includes(bodyStyles.overflowY)),
     bodyClientHeight: body instanceof HTMLElement ? body.clientHeight : 0,
     bodyScrollHeight: body instanceof HTMLElement ? body.scrollHeight : 0,
-    endcapPresent: Boolean(endcap),
-    endcapLoaded: endcap instanceof HTMLImageElement ? endcap.complete && endcap.naturalWidth > 0 : false,
-    endcapSrcCorrect: endcap instanceof HTMLImageElement ? endcap.src.includes('assets_work_808-emblem.opt.webp') : false,
-    endcapDecorative: endcap instanceof HTMLImageElement ? endcap.alt === '' && endcap.getAttribute('aria-hidden') === 'true' : false,
+    headerEmblemPresent: Boolean(emblem),
+    headerEmblemLoaded: emblem instanceof HTMLImageElement ? emblem.complete && emblem.naturalWidth > 0 : false,
+    headerEmblemSrcCorrect: emblem instanceof HTMLImageElement ? emblem.src.includes('assets_work_808-emblem.opt.webp') : false,
+    headerEmblemDecorative: emblem instanceof HTMLImageElement ? emblem.alt === '' && emblem.getAttribute('aria-hidden') === 'true' : false,
+    headerEmblemInsideTop,
+    headerItemsDoNotOverlap,
+    bottomSignoffAbsent: !document.querySelector('.bio-modal-signoff') && !document.querySelector('.bio-signature-endcap'),
   };
 });
 
@@ -120,7 +137,8 @@ try {
 
     const allMetrics = await getMetrics(page);
     await work.screenshot({ path: path.join(outputDir, `${viewport.name}-all.png`) });
-    await page.locator('#about').screenshot({ path: path.join(outputDir, `${viewport.name}-creative-focus-signature.png`) });
+    await page.locator('#about').screenshot({ path: path.join(outputDir, `${viewport.name}-creative-focus-no-emblem.png`) });
+    await page.locator('.site-footer').screenshot({ path: path.join(outputDir, `${viewport.name}-footer-emblem.png`) });
 
     const checks = [
       ['no page overflow', !allMetrics.horizontalOverflow],
@@ -136,11 +154,11 @@ try {
       ['all 28 works represented exactly once', allMetrics.combinedCount === 28 && allMetrics.combinedUniqueCount === 28],
       ['responsive compact-grid columns', allMetrics.firstRowCount === viewport.expectedColumns],
       ['chronology language absent', allMetrics.chronologyLanguageAbsent],
-      ['signature present', allMetrics.signaturePresent],
-      ['signature loaded', allMetrics.signatureLoaded],
-      ['signature uses approved asset', allMetrics.signatureSrcCorrect],
-      ['signature alt is contextual', allMetrics.signatureAltCorrect],
-      ['signature remains inside portrait card', allMetrics.signatureInsidePortrait],
+      ['Creative Focus portrait emblem absent', allMetrics.portraitSignatureAbsent],
+      ['footer emblem present and loaded', allMetrics.footerEmblemPresent && allMetrics.footerEmblemLoaded],
+      ['footer emblem uses approved asset', allMetrics.footerEmblemSrcCorrect],
+      ['footer emblem is decorative', allMetrics.footerEmblemDecorative],
+      ['footer emblem remains inside footer grid', allMetrics.footerEmblemInsideGrid],
       ['all images loaded', allMetrics.imageFailureCount === 0],
     ];
 
@@ -186,7 +204,7 @@ try {
     await bioTrigger.click();
     await page.locator('.modal.active .bio-modal-card').waitFor({ state: 'visible' });
     const bioMetrics = await getBioMetrics(page);
-    await page.locator('.modal.active').screenshot({ path: path.join(outputDir, `${viewport.name}-full-bio.png`) });
+    await page.locator('.modal.active').screenshot({ path: path.join(outputDir, `${viewport.name}-full-bio-header-emblem.png`) });
 
     checks.push(['bio section hierarchy', arraysEqual(bioMetrics.headings, expectedBioHeadings)]);
     checks.push(['bio uses interpretive-lineage qualifier', bioMetrics.hasInterpretiveLineage && bioMetrics.hasOneToOneQualifier]);
@@ -194,9 +212,12 @@ try {
     checks.push(['stale 50/50 framing absent', bioMetrics.staleFiftyFiftyAbsent]);
     checks.push(['bio modal contained in viewport', bioMetrics.modalContained]);
     checks.push(['bio body supports internal scrolling', bioMetrics.bodyScrollEnabled]);
-    checks.push(['bio emblem endcap present and loaded', bioMetrics.endcapPresent && bioMetrics.endcapLoaded]);
-    checks.push(['bio emblem reuses approved asset', bioMetrics.endcapSrcCorrect]);
-    checks.push(['bio emblem endcap is decorative', bioMetrics.endcapDecorative]);
+    checks.push(['bio header emblem present and loaded', bioMetrics.headerEmblemPresent && bioMetrics.headerEmblemLoaded]);
+    checks.push(['bio header emblem reuses approved asset', bioMetrics.headerEmblemSrcCorrect]);
+    checks.push(['bio header emblem is decorative', bioMetrics.headerEmblemDecorative]);
+    checks.push(['bio header emblem remains inside header', bioMetrics.headerEmblemInsideTop]);
+    checks.push(['bio header title, emblem, and close control do not overlap', bioMetrics.headerItemsDoNotOverlap]);
+    checks.push(['bio bottom emblem endcap removed', bioMetrics.bottomSignoffAbsent]);
 
     await page.getByRole('button', { name: 'Close biography' }).click();
     await page.waitForTimeout(80);
@@ -211,5 +232,5 @@ try {
 }
 
 await fs.writeFile(path.join(outputDir, 'findings.json'), JSON.stringify(findings, null, 2), 'utf8');
-await fs.writeFile(path.join(outputDir, 'README.md'), `# Señor 808 Curated Selected Work + Full Bio QA\n\nTarget: ${targetUrl}\n\nResult: ${failures.length === 0 ? 'PASS' : 'FAIL'}\n${failures.map((failure) => `- ${failure}`).join('\n')}\n`, 'utf8');
-if (failures.length > 0) throw new Error(`Curated gallery and full bio QA failed:\n${failures.join('\n')}`);
+await fs.writeFile(path.join(outputDir, 'README.md'), `# Señor 808 Curated Selected Work + Emblem Placement QA\n\nTarget: ${targetUrl}\n\nResult: ${failures.length === 0 ? 'PASS' : 'FAIL'}\n${failures.map((failure) => `- ${failure}`).join('\n')}\n`, 'utf8');
+if (failures.length > 0) throw new Error(`Curated gallery and emblem placement QA failed:\n${failures.join('\n')}`);

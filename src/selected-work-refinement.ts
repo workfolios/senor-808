@@ -277,23 +277,42 @@ const initializeGalleryRefinement = () => {
   syncLayout();
 };
 
-const initializeSignatureMark = () => {
-  const portrait = document.querySelector<HTMLElement>('#about .portrait-card');
-  if (!portrait) {
-    window.requestAnimationFrame(initializeSignatureMark);
+const initializeIdentityEmblemPlacement = () => {
+  const bioTop = document.querySelector<HTMLElement>('.bio-modal-card .modal-top');
+  const footerGrid = document.querySelector<HTMLElement>('.site-footer .footer-grid');
+  if (!bioTop || !footerGrid) {
+    window.requestAnimationFrame(initializeIdentityEmblemPlacement);
     return;
   }
-  if (portrait.querySelector('.portrait-signature-mark')) return;
 
-  portrait.classList.add('portrait-card-signature-enabled');
-  const mark = document.createElement('img');
-  mark.className = 'portrait-signature-mark';
-  mark.src = getAssetPath('/assets/work/assets_work_808-emblem.opt.webp');
-  mark.alt = 'Señor 808 signature emblem';
-  mark.loading = 'lazy';
-  mark.decoding = 'async';
-  portrait.append(mark);
+  document.querySelector('#about .portrait-signature-mark')?.remove();
+  document.querySelector('#about .portrait-card')?.classList.remove('portrait-card-signature-enabled');
+
+  if (!bioTop.querySelector('.bio-header-emblem')) {
+    const existingEndcap = document.querySelector<HTMLImageElement>('.bio-signature-endcap');
+    const emblem = existingEndcap || document.createElement('img');
+    emblem.className = 'bio-header-emblem';
+    emblem.src = getAssetPath('/assets/work/assets_work_808-emblem.opt.webp');
+    emblem.alt = '';
+    emblem.setAttribute('aria-hidden', 'true');
+    emblem.loading = 'lazy';
+    emblem.decoding = 'async';
+    const closeButton = bioTop.querySelector('.modal-close');
+    bioTop.insertBefore(emblem, closeButton || null);
+    document.querySelector('.bio-modal-signoff')?.remove();
+  }
+
+  if (!footerGrid.querySelector('.footer-signature-emblem')) {
+    const emblem = document.createElement('img');
+    emblem.className = 'footer-signature-emblem';
+    emblem.src = getAssetPath('/assets/work/assets_work_808-emblem.opt.webp');
+    emblem.alt = '';
+    emblem.setAttribute('aria-hidden', 'true');
+    emblem.loading = 'lazy';
+    emblem.decoding = 'async';
+    footerGrid.append(emblem);
+  }
 };
 
 initializeGalleryRefinement();
-initializeSignatureMark();
+initializeIdentityEmblemPlacement();
