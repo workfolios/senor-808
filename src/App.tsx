@@ -765,14 +765,32 @@ export default function App() {
           if (event.target === event.currentTarget) closeBio();
         }}
       >
-        <div className="modal-card" ref={bioDialogRef}>
+        <div className="modal-card bio-modal-card" ref={bioDialogRef}>
           <div className="modal-top">
             <h2 id="bioTitle">About Señor 808</h2>
             <button ref={bioCloseRef} className="modal-close" type="button" aria-label="Close biography" onClick={closeBio}>×</button>
           </div>
-          <p>Bob Garcia, known professionally as Señor 808, Senor 808, and The Real Señor 808, works where image meets voice. In the studio, he builds high-contrast compositions using spray paint, acrylic layering, and mixed-media mark-making. The work moves between portraiture, typography, and geometry—like signal breaking through noise.</p>
-          <p style={{ marginTop: '16px' }}>Visual art is the established primary practice. A developing audio and podcast lane extends the same discipline into conversation through clear rhythm, clean framing, and a distinct point of view.</p>
-          <p style={{ marginTop: '16px' }}>Additional project history, approved partner references, and media links will be added as they become publish-ready and permissioned.</p>
+          <div className="bio-modal-body">
+            <section className="bio-modal-section" aria-labelledby="bio-studio-title">
+              <h3 id="bio-studio-title">Studio Practice</h3>
+              <p>Bob Garcia, known professionally as Señor 808 and online as The Real Señor 808, is a San Antonio-based visual artist whose established practice centers high-contrast compositions built through spray paint, acrylic layering, and mixed-media mark-making. His work moves between portraiture, typography, geometry, and recurring visual anchors, using layering, motion, depth, saturated accents, and structural breaks to create surfaces that register from a distance and reward closer inspection.</p>
+            </section>
+            <section className="bio-modal-section" aria-labelledby="bio-lineage-title">
+              <h3 id="bio-lineage-title">Visual Lineage</h3>
+              <p>A useful lens for reading the work is late-20th-century Mexican modernism and the broader shift associated with the Generación de la Ruptura. For Señor 808, that history functions as an interpretive lineage rather than a one-to-one classification: a reference point for abstraction, structural experimentation, personal expression, and the tension between order and disruption. In the studio, those ideas are translated through contemporary materials and an approach that balances raw mark-making with controlled framing—an edge of grit and polish.</p>
+            </section>
+            <section className="bio-modal-section" aria-labelledby="bio-language-title">
+              <h3 id="bio-language-title">Visual Language</h3>
+              <p>Portrait fragments, statement typography, repeated shapes, geometric breaks, eye motifs, and organic forms can operate as signals within denser fields. Together they create a visual language concerned with how image, rhythm, and point of view can coexist within the same surface.</p>
+            </section>
+            <section className="bio-modal-section" aria-labelledby="bio-voice-title">
+              <h3 id="bio-voice-title">Image Meets Voice</h3>
+              <p>Visual art remains the established primary practice. Audio, podcasting, and related media are a developing extension, carrying forward the same interest in rhythm, framing, and point of view without being presented as equally established. Links, credits, and additional project proof are added only when publish-ready and permissioned.</p>
+            </section>
+            <div className="bio-modal-signoff" aria-hidden="true">
+              <img className="bio-signature-endcap" src={getAssetPath('/assets/work/assets_work_808-emblem.opt.webp')} loading="lazy" decoding="async" alt="" aria-hidden="true" />
+            </div>
+          </div>
         </div>
       </div>
 

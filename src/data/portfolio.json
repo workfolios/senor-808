@@ -7,6 +7,14 @@
     "cat": "MIXED MEDIA"
   },
   {
+    "id": 5,
+    "img": "/assets/work/assets_work_direct-gaze.png",
+    "alt": "Close-up portrait fragment focused on eyes with layered paint and text elements.",
+    "title": "Direct Gaze",
+    "cat": "MIXED MEDIA",
+    "year": "[YEAR]"
+  },
+  {
     "id": 11,
     "img": "/assets/work/assets_work_prism-relay.opt.webp",
     "alt": "Black-ground artwork with saturated pink, red, green, blue, orange, and white organic and faceted shapes.",
@@ -14,11 +22,12 @@
     "cat": "MIXED MEDIA"
   },
   {
-    "id": 12,
-    "img": "/assets/work/assets_work_pressure-loop.opt.webp",
-    "alt": "Black-ground artwork with hot pink, red, orange, yellow, white, and black looping lines and patterned enclosed shapes.",
-    "title": "Pressure Loop",
-    "cat": "MIXED MEDIA"
+    "id": 2,
+    "img": "/assets/work/assets_work_rose-circuit.png",
+    "alt": "Rose motif layered over geometric blocks and sprayed color accents.",
+    "title": "Rose Circuit",
+    "cat": "SPRAY + ACRYLIC",
+    "year": "[YEAR]"
   },
   {
     "id": 13,
@@ -28,11 +37,20 @@
     "cat": "MIXED MEDIA"
   },
   {
-    "id": 14,
-    "img": "/assets/work/assets_work_night-structure.opt.webp",
-    "alt": "Dark artwork with layered white outlines and muted red, green, blue, tan, and black forms stacked vertically.",
-    "title": "Night Structure",
-    "cat": "MIXED MEDIA"
+    "id": 4,
+    "img": "/assets/work/assets_work_frequency-grid.png",
+    "alt": "Abstract grid composition with bold black geometry and layered color fields.",
+    "title": "Frequency Grid",
+    "cat": "SPRAY + ACRYLIC",
+    "year": "[YEAR]"
+  },
+  {
+    "id": 3,
+    "img": "/assets/work/assets_work_never-apologize.png",
+    "alt": "Typographic artwork with the phrase “never apologize being you” over layered texture.",
+    "title": "Never Apologize",
+    "cat": "COMMISSION",
+    "year": "[YEAR]"
   },
   {
     "id": 15,
@@ -40,6 +58,29 @@
     "alt": "Light-ground artwork with orange, red, magenta, purple, blue, gray, and lime shapes crossed by looping black lines.",
     "title": "Red Thread",
     "cat": "MIXED MEDIA"
+  },
+  {
+    "id": 7,
+    "img": "/assets/work/assets_work_halo-drift.png",
+    "alt": "Floating figure collage with soft green and pink halo tones and dark negative space.",
+    "title": "Halo Drift",
+    "cat": "COLLAGE",
+    "year": "[YEAR]"
+  },
+  {
+    "id": 14,
+    "img": "/assets/work/assets_work_night-structure.opt.webp",
+    "alt": "Dark artwork with layered white outlines and muted red, green, blue, tan, and black forms stacked vertically.",
+    "title": "Night Structure",
+    "cat": "MIXED MEDIA"
+  },
+  {
+    "id": 10,
+    "img": "/assets/work/assets_work_crimson-bloom.png",
+    "alt": "High-contrast rose linework in vivid pink and red over a light background.",
+    "title": "Crimson Bloom",
+    "cat": "ACRYLIC",
+    "year": "[YEAR]"
   },
   {
     "id": 16,
@@ -50,6 +91,15 @@
     "wide": true
   },
   {
+    "id": 1,
+    "img": "/assets/work/assets_work_after-hours-frequency.png",
+    "alt": "High-contrast portrait with neon lighting effects and graphic overlay treatment.",
+    "title": "After Hours Frequency",
+    "cat": "MIXED MEDIA",
+    "year": "[YEAR]",
+    "wide": true
+  },
+  {
     "id": 18,
     "img": "/assets/work/assets_work_interlock.opt.webp",
     "alt": "Yellow artwork with interlocking green, pink, coral, and black bars, white marks, and thin connecting lines.",
@@ -57,11 +107,20 @@
     "cat": "ACRYLIC"
   },
   {
-    "id": 19,
-    "img": "/assets/work/assets_work_trajectory.opt.webp",
-    "alt": "Light-ground artwork with a diagonal black hatched band and a segmented red, yellow, pink, purple, and green form.",
-    "title": "Trajectory",
+    "id": 12,
+    "img": "/assets/work/assets_work_pressure-loop.opt.webp",
+    "alt": "Black-ground artwork with hot pink, red, orange, yellow, white, and black looping lines and patterned enclosed shapes.",
+    "title": "Pressure Loop",
     "cat": "MIXED MEDIA"
+  },
+  {
+    "id": 6,
+    "img": "/assets/work/assets_work_orbit-porttrait.png",
+    "alt": "Abstract face drawing with spiral motion lines on a light sketch-style background.",
+    "title": "Orbit Portrait",
+    "cat": "MIXED MEDIA",
+    "year": "[YEAR]",
+    "wide": true
   },
   {
     "id": 20,
@@ -71,6 +130,29 @@
     "cat": "MIXED MEDIA"
   },
   {
+    "id": 8,
+    "img": "/assets/work/assets_work_vector-rhythm.png",
+    "alt": "Abstract acrylic piece with neon pink linework, blue shapes, and dark ground.",
+    "title": "Vector Rhythm",
+    "cat": "ACRYLIC",
+    "year": "[YEAR]"
+  },
+  {
+    "id": 19,
+    "img": "/assets/work/assets_work_trajectory.opt.webp",
+    "alt": "Light-ground artwork with a diagonal black hatched band and a segmented red, yellow, pink, purple, and green form.",
+    "title": "Trajectory",
+    "cat": "MIXED MEDIA"
+  },
+  {
+    "id": 9,
+    "img": "/assets/work/assets_work_smoke-signal.png",
+    "alt": "High-contrast figure composition with smoky textures and pink accent marks.",
+    "title": "Smoke Signal",
+    "cat": "MIXED MEDIA",
+    "year": "[YEAR]"
+  },
+  {
     "id": 21,
     "img": "/assets/work/assets_work_nested-current.opt.webp",
     "alt": "Artwork with overlapping navy loops and rounded pink, orange, green, yellow, purple, and red fields.",
@@ -78,24 +160,17 @@
     "cat": "MIXED MEDIA"
   },
   {
+    "id": 26,
+    "img": "/assets/work/assets_work_violet-crown.opt.webp",
+    "alt": "Flower artwork with deep violet and burgundy pointed petals, a dark dotted center, blue-violet background, and green stem.",
+    "title": "Violet Crown",
+    "cat": "ACRYLIC"
+  },
+  {
     "id": 22,
     "img": "/assets/work/assets_work_neon-knot.opt.webp",
     "alt": "Bright green, pink, blue, red, and orange looping forms on a dark field over irregular torn paper.",
     "title": "Neon Knot",
-    "cat": "MIXED MEDIA"
-  },
-  {
-    "id": 23,
-    "img": "/assets/work/assets_work_violet-facet.opt.webp",
-    "alt": "Close view of a faceted violet and pink geometric form outlined in black on a gray field.",
-    "title": "Violet Facet",
-    "cat": "MIXED MEDIA"
-  },
-  {
-    "id": 24,
-    "img": "/assets/work/assets_work_red-meridian.opt.webp",
-    "alt": "Artwork with a large red circle, black and deep-red curves, green and blue details, and orange-yellow angular forms.",
-    "title": "Red Meridian",
     "cat": "MIXED MEDIA"
   },
   {
@@ -106,11 +181,18 @@
     "cat": "MIXED MEDIA"
   },
   {
-    "id": 26,
-    "img": "/assets/work/assets_work_violet-crown.opt.webp",
-    "alt": "Flower artwork with deep violet and burgundy pointed petals, a dark dotted center, blue-violet background, and green stem.",
-    "title": "Violet Crown",
-    "cat": "ACRYLIC"
+    "id": 24,
+    "img": "/assets/work/assets_work_red-meridian.opt.webp",
+    "alt": "Artwork with a large red circle, black and deep-red curves, green and blue details, and orange-yellow angular forms.",
+    "title": "Red Meridian",
+    "cat": "MIXED MEDIA"
+  },
+  {
+    "id": 23,
+    "img": "/assets/work/assets_work_violet-facet.opt.webp",
+    "alt": "Close view of a faceted violet and pink geometric form outlined in black on a gray field.",
+    "title": "Violet Facet",
+    "cat": "MIXED MEDIA"
   },
   {
     "id": 27,
@@ -125,87 +207,5 @@
     "alt": "Framed purple-ground artwork with orange circles, branching black lines, and layered green, pink, blue, red, and yellow forms.",
     "title": "Branching Profile",
     "cat": "MIXED MEDIA"
-  },
-  {
-    "id": 1,
-    "img": "/assets/work/assets_work_after-hours-frequency.png",
-    "alt": "High-contrast portrait with neon lighting effects and graphic overlay treatment.",
-    "title": "After Hours Frequency",
-    "cat": "MIXED MEDIA",
-    "year": "[YEAR]",
-    "wide": true
-  },
-  {
-    "id": 2,
-    "img": "/assets/work/assets_work_rose-circuit.png",
-    "alt": "Rose motif layered over geometric blocks and sprayed color accents.",
-    "title": "Rose Circuit",
-    "cat": "SPRAY + ACRYLIC",
-    "year": "[YEAR]"
-  },
-  {
-    "id": 3,
-    "img": "/assets/work/assets_work_never-apologize.png",
-    "alt": "Typographic artwork with the phrase “never apologize being you” over layered texture.",
-    "title": "Never Apologize",
-    "cat": "COMMISSION",
-    "year": "[YEAR]"
-  },
-  {
-    "id": 4,
-    "img": "/assets/work/assets_work_frequency-grid.png",
-    "alt": "Abstract grid composition with bold black geometry and layered color fields.",
-    "title": "Frequency Grid",
-    "cat": "SPRAY + ACRYLIC",
-    "year": "[YEAR]"
-  },
-  {
-    "id": 5,
-    "img": "/assets/work/assets_work_direct-gaze.png",
-    "alt": "Close-up portrait fragment focused on eyes with layered paint and text elements.",
-    "title": "Direct Gaze",
-    "cat": "MIXED MEDIA",
-    "year": "[YEAR]"
-  },
-  {
-    "id": 6,
-    "img": "/assets/work/assets_work_orbit-porttrait.png",
-    "alt": "Abstract face drawing with spiral motion lines on a light sketch-style background.",
-    "title": "Orbit Portrait",
-    "cat": "MIXED MEDIA",
-    "year": "[YEAR]",
-    "wide": true
-  },
-  {
-    "id": 7,
-    "img": "/assets/work/assets_work_halo-drift.png",
-    "alt": "Floating figure collage with soft green and pink halo tones and dark negative space.",
-    "title": "Halo Drift",
-    "cat": "COLLAGE",
-    "year": "[YEAR]"
-  },
-  {
-    "id": 8,
-    "img": "/assets/work/assets_work_vector-rhythm.png",
-    "alt": "Abstract acrylic piece with neon pink linework, blue shapes, and dark ground.",
-    "title": "Vector Rhythm",
-    "cat": "ACRYLIC",
-    "year": "[YEAR]"
-  },
-  {
-    "id": 9,
-    "img": "/assets/work/assets_work_smoke-signal.png",
-    "alt": "High-contrast figure composition with smoky textures and pink accent marks.",
-    "title": "Smoke Signal",
-    "cat": "MIXED MEDIA",
-    "year": "[YEAR]"
-  },
-  {
-    "id": 10,
-    "img": "/assets/work/assets_work_crimson-bloom.png",
-    "alt": "High-contrast rose linework in vivid pink and red over a light background.",
-    "title": "Crimson Bloom",
-    "cat": "ACRYLIC",
-    "year": "[YEAR]"
   }
 ]
