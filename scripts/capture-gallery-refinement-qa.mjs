@@ -110,7 +110,7 @@ try {
     await firstRailCard.click();
     await page.locator('.lightbox.active').waitFor({ state: 'visible' });
     checks.push(['rail first card opens 808 Emblem', (await page.locator('#lightbox-title').textContent())?.trim() === '808 Emblem']);
-    await page.getByRole('button', { name: 'Close artwork viewer' }).click();
+    await page.getByRole('button', { name: 'Close artwork view' }).click();
     await page.waitForTimeout(60);
 
     const railViewport = page.locator('.selected-work-rail-viewport');
