@@ -9,8 +9,10 @@ type PortfolioItem = {
   year?: string;
 };
 
-const RAIL_WORK_IDS = [17, 11, 12, 13, 14, 15, 16, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28];
+const RAIL_WORK_IDS = [17, 5, 11, 2, 13, 4, 3, 15, 7, 14, 10, 16];
+const railWorkIdSet = new Set(RAIL_WORK_IDS);
 const works = portfolioData as PortfolioItem[];
+const workByTitle = new Map(works.map((work) => [work.title, work]));
 const railWorks = RAIL_WORK_IDS.map((id) => works.find((work) => work.id === id)).filter(Boolean) as PortfolioItem[];
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 let lastRailTrigger: HTMLButtonElement | null = null;
@@ -27,6 +29,15 @@ const getGridCards = () =>
 
 const getCardTitle = (card: HTMLButtonElement) =>
   card.querySelector<HTMLElement>('.work-meta strong')?.textContent?.trim() || '';
+
+const syncGridRoleVisibility = (isAll: boolean) => {
+  getGridCards().forEach((card) => {
+    const work = workByTitle.get(getCardTitle(card));
+    if (!work) return;
+    card.dataset.workId = String(work.id);
+    card.hidden = isAll && railWorkIdSet.has(work.id);
+  });
+};
 
 const openGridArtwork = (title: string, railTrigger?: HTMLButtonElement) => {
   const target = getGridCards().find((card) => getCardTitle(card) === title);
@@ -70,6 +81,7 @@ const createRailCard = (work: PortfolioItem) => {
   card.type = 'button';
   card.className = 'selected-work-rail-card';
   card.setAttribute('aria-label', `Open ${work.title}`);
+  card.dataset.workId = String(work.id);
   card.dataset.workTitle = work.title;
 
   const image = document.createElement('img');
@@ -188,6 +200,7 @@ const initializeGalleryRefinement = () => {
     section.classList.toggle('gallery-all-view', isAll);
     section.classList.toggle('gallery-filtered-view', !isAll);
     shell.hidden = !isAll;
+    syncGridRoleVisibility(isAll);
     if (!isAll) lastRailTrigger = null;
     if (isAll) window.requestAnimationFrame(updateRailState);
     window.requestAnimationFrame(updateFilteredLightboxCounter);
