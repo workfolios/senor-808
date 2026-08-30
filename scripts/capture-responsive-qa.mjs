@@ -235,7 +235,7 @@ async function runEngineSmoke(engine) {
   try {
     await preparePage(page, `${engine.name}:principal-flow`);
 
-    await page.getByRole('heading', { name: 'Visual Artist & Audio Storyteller' }).waitFor({ state: 'visible' });
+    await page.getByRole('heading', { name: 'High-Contrast Visual Art' }).waitFor({ state: 'visible' });
     result.checks.push('hero');
 
     await page.getByRole('button', { name: 'Mixed Media' }).click();
