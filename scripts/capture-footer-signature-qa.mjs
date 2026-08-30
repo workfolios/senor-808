@@ -75,7 +75,8 @@ try {
       const taglineColor = tagline ? getComputedStyle(tagline).color : '';
 
       const imagesFailed = Array.from(document.images).filter((image) => !image.complete || image.naturalWidth === 0);
-      const contentRects = [brandRect, metaRect, socialsRect, copyrightRect].filter(Boolean);
+      const contentRects = [brandRect, metaRect, socialsRect, copyrightRect]
+        .filter((rect) => Boolean(rect && (rect.width > 0 || rect.height > 0)));
       const contentInsideFooter = contentRects.every((rect) => Boolean(
         footerRect && rect.left >= footerRect.left - 1 && rect.right <= footerRect.right + 1 &&
         rect.top >= footerRect.top - 1 && rect.bottom <= footerRect.bottom + 1
