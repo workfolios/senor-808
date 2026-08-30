@@ -281,17 +281,22 @@
   .footer-socials {
     grid-column: 1;
     grid-row: 7;
-    display: grid !important;
-    grid-template-columns: repeat(2, minmax(0, var(--footer-v2-social-pill)));
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center;
+    justify-content: flex-start;
     gap: 10px;
-    width: 100%;
+    width: min(100%, 254px);
+    max-width: 254px;
     margin-top: 16px;
   }
 
   .footer-socials .social-badge {
-    width: 100% !important;
-    min-width: 0 !important;
-    max-width: var(--footer-v2-social-pill);
+    flex: 0 0 var(--footer-v2-social-pill) !important;
+    width: var(--footer-v2-social-pill) !important;
+    min-width: var(--footer-v2-social-pill) !important;
+    max-width: var(--footer-v2-social-pill) !important;
     margin: 0;
   }
 
@@ -310,5 +315,10 @@
 @media (max-width: 360px) {
   :root {
     --footer-v2-social-pill: 116px;
+  }
+
+  .footer-socials {
+    width: min(100%, 242px);
+    max-width: 242px;
   }
 }
