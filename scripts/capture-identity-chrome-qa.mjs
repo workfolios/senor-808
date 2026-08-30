@@ -123,8 +123,8 @@ try {
         tagline: tagline?.textContent?.trim() || '',
         socialLabels,
         footerHeight: footerRect?.height || 0,
-        brandTop: brandRect?.top || 0,
-        metaTop: metaRect?.top || 0,
+        brandCenterY: brandRect ? brandRect.top + brandRect.height / 2 : 0,
+        metaCenterY: metaRect ? metaRect.top + metaRect.height / 2 : 0,
         backOpacity: backStyles?.opacity || '',
         backVisibility: backStyles?.visibility || '',
         pageOverflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
@@ -135,7 +135,7 @@ try {
     assert(JSON.stringify(footerState.socialLabels) === JSON.stringify(['Instagram', 'Threads']), `${viewport.name}: social micro-labels are not intentional/complete`);
     assert(!footerState.pageOverflow, `${viewport.name}: footer introduced horizontal overflow`);
     if (viewport.width > 720) {
-      assert(Math.abs(footerState.brandTop - footerState.metaTop) <= 8, `${viewport.name}: Studio Signature anchors are vertically misaligned`);
+      assert(Math.abs(footerState.brandCenterY - footerState.metaCenterY) <= 4, `${viewport.name}: Studio Signature optical centerline is misaligned`);
       assert(footerState.footerHeight <= 105, `${viewport.name}: footer footprint exceeds 105px (${footerState.footerHeight}px)`);
     } else {
       assert(footerState.footerHeight <= 145, `${viewport.name}: mobile footer footprint exceeds compact 145px cap (${footerState.footerHeight}px)`);
