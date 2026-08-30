@@ -56,10 +56,10 @@ jobs:
           TARGET_URL: http://127.0.0.1:4173/
         run: node scripts/capture-gallery-refinement-qa.mjs
 
-      - name: Capture Coordinated Identity Chrome QA
+      - name: Capture Footer Signature Anchor QA
         env:
           TARGET_URL: http://127.0.0.1:4173/
-        run: node scripts/capture-identity-chrome-qa.mjs
+        run: node scripts/capture-footer-signature-qa.mjs
 
       - name: Upload Gallery QA Review Pack
         if: always()
