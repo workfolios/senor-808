@@ -113,10 +113,13 @@ body.footer-in-view .back-to-top {
     font-size: 0.76rem;
   }
 
-  /* A true top drawer: attached to the frame and opaque through the remaining viewport. */
+  /* A true top drawer: full isolating surface, compact content rhythm. */
   .site-header .nav-links.open {
     position: fixed !important;
     inset: 54px 0 0 0 !important;
+    display: grid !important;
+    grid-auto-rows: min-content !important;
+    align-content: start !important;
     width: 100vw !important;
     max-width: none !important;
     min-height: calc(100svh - 54px) !important;
