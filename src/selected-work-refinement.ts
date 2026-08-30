@@ -277,42 +277,21 @@ const initializeGalleryRefinement = () => {
   syncLayout();
 };
 
-const initializeIdentityEmblemPlacement = () => {
-  const bioTop = document.querySelector<HTMLElement>('.bio-modal-card .modal-top');
+const initializeIdentityEmblemRemoval = () => {
+  const bioCard = document.querySelector<HTMLElement>('.bio-modal-card');
   const footerGrid = document.querySelector<HTMLElement>('.site-footer .footer-grid');
-  if (!bioTop || !footerGrid) {
-    window.requestAnimationFrame(initializeIdentityEmblemPlacement);
+  if (!bioCard || !footerGrid) {
+    window.requestAnimationFrame(initializeIdentityEmblemRemoval);
     return;
   }
 
   document.querySelector('#about .portrait-signature-mark')?.remove();
   document.querySelector('#about .portrait-card')?.classList.remove('portrait-card-signature-enabled');
-
-  if (!bioTop.querySelector('.bio-header-emblem')) {
-    const existingEndcap = document.querySelector<HTMLImageElement>('.bio-signature-endcap');
-    const emblem = existingEndcap || document.createElement('img');
-    emblem.className = 'bio-header-emblem';
-    emblem.src = getAssetPath('/assets/work/assets_work_808-emblem.opt.webp');
-    emblem.alt = '';
-    emblem.setAttribute('aria-hidden', 'true');
-    emblem.loading = 'lazy';
-    emblem.decoding = 'async';
-    const closeButton = bioTop.querySelector('.modal-close');
-    bioTop.insertBefore(emblem, closeButton || null);
-    document.querySelector('.bio-modal-signoff')?.remove();
-  }
-
-  if (!footerGrid.querySelector('.footer-signature-emblem')) {
-    const emblem = document.createElement('img');
-    emblem.className = 'footer-signature-emblem';
-    emblem.src = getAssetPath('/assets/work/assets_work_808-emblem.opt.webp');
-    emblem.alt = '';
-    emblem.setAttribute('aria-hidden', 'true');
-    emblem.loading = 'lazy';
-    emblem.decoding = 'async';
-    footerGrid.append(emblem);
-  }
+  bioCard.querySelector('.bio-header-emblem')?.remove();
+  bioCard.querySelector('.bio-modal-signoff')?.remove();
+  bioCard.querySelector('.bio-signature-endcap')?.remove();
+  footerGrid.querySelector('.footer-signature-emblem')?.remove();
 };
 
 initializeGalleryRefinement();
-initializeIdentityEmblemPlacement();
+initializeIdentityEmblemRemoval();
