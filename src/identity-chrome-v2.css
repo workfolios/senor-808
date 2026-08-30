@@ -1,0 +1,235 @@
+/* Header v2.0 — Quiet Frame + Hero v2.0 — Artist-First.
+   Final presentation layer for the coordinated identity-chrome refinement. */
+
+/* ---------- Header v2.0: quiet frame ---------- */
+.site-header {
+  height: 76px;
+}
+
+.site-header.scrolled {
+  height: 64px;
+}
+
+.site-header .brand img {
+  width: 150px;
+}
+
+.site-header .nav-links {
+  gap: 22px;
+}
+
+.site-header .nav-cta {
+  min-height: 42px;
+  padding-inline: 18px;
+}
+
+/* ---------- Hero v2.0: artist-first hierarchy ---------- */
+.hero-copy {
+  gap: 22px;
+}
+
+.hero-copy .lead {
+  max-width: 720px;
+}
+
+.hero-media-note {
+  position: relative;
+  max-width: 640px;
+  padding-left: 38px;
+  color: var(--soft);
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.55;
+}
+
+.hero-media-note::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.72em;
+  width: 24px;
+  height: 2px;
+  background: var(--accent);
+}
+
+.hero-actions {
+  margin-top: 2px;
+}
+
+/* Back-to-top is peripheral navigation, never part of the footer composition. */
+body.footer-in-view .back-to-top {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+  transform: translateY(10px) !important;
+}
+
+@media (min-width: 921px) and (max-width: 1180px) {
+  .site-header .nav-links {
+    gap: 15px;
+    font-size: 0.84rem;
+  }
+}
+
+@media (max-width: 920px) {
+  .site-header {
+    position: fixed !important;
+    inset: 0 0 auto 0 !important;
+    top: 0 !important;
+    z-index: 200;
+    height: 54px !important;
+    transform: none !important;
+    translate: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    background: rgba(11, 15, 20, 0.96);
+    border-color: rgba(39, 49, 66, 0.62);
+    backdrop-filter: blur(16px);
+    backface-visibility: hidden;
+    isolation: isolate;
+  }
+
+  .site-header.scrolled {
+    height: 54px !important;
+  }
+
+  .site-header .nav-row {
+    min-height: 54px;
+  }
+
+  .site-header .brand {
+    min-width: 0;
+  }
+
+  .site-header .brand img {
+    width: 118px;
+  }
+
+  .site-header .mobile-toggle {
+    min-height: 36px;
+    padding-inline: 13px;
+    border-color: rgba(255, 255, 255, 0.18);
+    background: transparent;
+    font-size: 0.76rem;
+  }
+
+  /* Replace the floating card with a true top drawer tied to the header. */
+  .site-header .nav-links.open {
+    position: fixed !important;
+    inset: 54px 0 auto 0 !important;
+    width: 100vw !important;
+    max-width: none !important;
+    max-height: calc(100svh - 54px) !important;
+    margin: 0 !important;
+    padding: 9px 20px 18px !important;
+    border: 0 !important;
+    border-top: 1px solid rgba(39, 49, 66, 0.62) !important;
+    border-bottom: 1px solid rgba(39, 49, 66, 0.82) !important;
+    border-radius: 0 0 18px 18px !important;
+    background: rgba(11, 15, 20, 0.99) !important;
+    box-shadow: 0 22px 44px rgba(0, 0, 0, 0.36) !important;
+    overflow-y: auto;
+  }
+
+  .site-header .nav-links.open > a:not(.nav-cta) {
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+    padding: 0 10px 0 14px;
+    border: 0;
+    border-left: 2px solid transparent;
+    color: var(--muted);
+  }
+
+  .site-header .nav-links.open > a.active:not(.nav-cta) {
+    border-left-color: var(--accent-2);
+    color: var(--text);
+    background: linear-gradient(90deg, rgba(216, 27, 96, 0.08), transparent 66%);
+  }
+
+  .site-header .nav-links.open > a:not(.nav-cta):hover,
+  .site-header .nav-links.open > a:not(.nav-cta):focus-visible {
+    border-left-color: rgba(255, 79, 147, 0.66);
+    color: var(--text);
+    background: linear-gradient(90deg, rgba(216, 27, 96, 0.07), transparent 66%);
+  }
+
+  .site-header .nav-links.open .nav-cta {
+    width: 100%;
+    min-height: 44px;
+    margin: 8px 0 0;
+    border-color: rgba(255, 79, 147, 0.46);
+    background: rgba(216, 27, 96, 0.08);
+    box-shadow: none;
+  }
+
+  .back-to-top {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero {
+    min-height: clamp(620px, 88svh, 760px);
+    padding-top: 94px;
+    padding-bottom: 52px;
+    background-position: 60% center !important;
+  }
+
+  .hero-grid {
+    align-items: center;
+  }
+
+  .hero-copy {
+    gap: 18px;
+  }
+
+  .hero-copy h1 {
+    max-width: 350px;
+    font-size: clamp(2.42rem, 11vw, 3.35rem);
+    line-height: 1.01;
+  }
+
+  .hero-copy .lead {
+    max-width: 340px;
+    font-size: 0.99rem;
+    line-height: 1.55;
+  }
+
+  .hero-media-note {
+    max-width: 330px;
+    padding-left: 32px;
+    font-size: 0.78rem;
+    line-height: 1.45;
+  }
+
+  .hero-media-note::before {
+    width: 20px;
+  }
+
+  .hero-actions {
+    gap: 10px;
+  }
+}
+
+@media (max-width: 380px) {
+  .hero {
+    min-height: clamp(600px, 86svh, 700px);
+    padding-top: 88px;
+    padding-bottom: 44px;
+  }
+
+  .hero-copy h1 {
+    font-size: clamp(2.22rem, 11.4vw, 2.82rem);
+  }
+
+  .hero-media-note {
+    font-size: 0.74rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.footer-in-view .back-to-top {
+    transform: none !important;
+  }
+}
