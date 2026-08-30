@@ -120,6 +120,7 @@ body.footer-in-view .back-to-top {
     display: grid !important;
     grid-auto-rows: min-content !important;
     align-content: start !important;
+    gap: 4px !important;
     width: 100vw !important;
     max-width: none !important;
     min-height: calc(100svh - 54px) !important;
