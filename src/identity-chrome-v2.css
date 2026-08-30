@@ -113,21 +113,21 @@ body.footer-in-view .back-to-top {
     font-size: 0.76rem;
   }
 
-  /* Replace the floating card with a true top drawer tied to the header. */
+  /* A true top drawer: attached to the frame and opaque through the remaining viewport. */
   .site-header .nav-links.open {
     position: fixed !important;
-    inset: 54px 0 auto 0 !important;
+    inset: 54px 0 0 0 !important;
     width: 100vw !important;
     max-width: none !important;
+    min-height: calc(100svh - 54px) !important;
     max-height: calc(100svh - 54px) !important;
     margin: 0 !important;
-    padding: 9px 20px 18px !important;
+    padding: 9px 20px 22px !important;
     border: 0 !important;
     border-top: 1px solid rgba(39, 49, 66, 0.62) !important;
-    border-bottom: 1px solid rgba(39, 49, 66, 0.82) !important;
-    border-radius: 0 0 18px 18px !important;
-    background: rgba(11, 15, 20, 0.99) !important;
-    box-shadow: 0 22px 44px rgba(0, 0, 0, 0.36) !important;
+    border-radius: 0 !important;
+    background: #0B0F14 !important;
+    box-shadow: none !important;
     overflow-y: auto;
   }
 
