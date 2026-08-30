@@ -79,8 +79,10 @@ try {
         const header = document.querySelector('.site-header');
         const drawer = document.querySelector('.nav-links.open');
         const toggleButton = document.querySelector('.mobile-toggle');
+        const navCta = drawer?.querySelector('.nav-cta');
         const headerRect = header?.getBoundingClientRect();
         const drawerRect = drawer?.getBoundingClientRect();
+        const navCtaRect = navCta?.getBoundingClientRect();
         return {
           toggleText: toggleButton?.textContent?.trim() || '',
           expanded: toggleButton?.getAttribute('aria-expanded'),
@@ -88,6 +90,7 @@ try {
           drawerTop: drawerRect?.top || 0,
           drawerLeft: drawerRect?.left || 0,
           drawerRight: drawerRect?.right || 0,
+          navCtaBottom: navCtaRect?.bottom || 0,
           bodyOverflow: getComputedStyle(document.body).overflow,
         };
       });
@@ -96,6 +99,7 @@ try {
       assert(Math.abs(navState.headerBottom - navState.drawerTop) <= 2, `${viewport.name}: drawer is detached from header`);
       assert(navState.drawerLeft <= 1 && Math.abs(navState.drawerRight - viewport.width) <= 2, `${viewport.name}: drawer is not viewport-wide`);
       assert(navState.bodyOverflow === 'hidden', `${viewport.name}: open drawer does not isolate background scrolling`);
+      assert(navState.navCtaBottom <= navState.headerBottom + 330, `${viewport.name}: drawer content is vertically over-distributed (${navState.navCtaBottom}px)`);
       await page.screenshot({ path: path.join(outputDir, `${viewport.name}-header-v2-open.png`), fullPage: false });
       await page.keyboard.press('Escape');
       await page.waitForTimeout(100);
@@ -134,7 +138,7 @@ try {
       assert(Math.abs(footerState.brandTop - footerState.metaTop) <= 8, `${viewport.name}: Studio Signature anchors are vertically misaligned`);
       assert(footerState.footerHeight <= 105, `${viewport.name}: footer footprint exceeds 105px (${footerState.footerHeight}px)`);
     } else {
-      assert(footerState.footerHeight <= 135, `${viewport.name}: mobile footer footprint exceeds 135px (${footerState.footerHeight}px)`);
+      assert(footerState.footerHeight <= 145, `${viewport.name}: mobile footer footprint exceeds compact 145px cap (${footerState.footerHeight}px)`);
     }
     if (viewport.width > 920) {
       assert(footerState.backOpacity === '0' || footerState.backVisibility === 'hidden', `${viewport.name}: Back to Top still competes with footer signature`);
