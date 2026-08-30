@@ -16,6 +16,8 @@ import './selected-work-refinement.css';
 import './footer-signature-anchor.css';
 import './selected-work-refinement.ts';
 import './footer-v4-minimal-signoff.ts';
+import './identity-chrome-v2.css';
+import './identity-chrome-v2.ts';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
