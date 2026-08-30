@@ -1,9 +1,9 @@
-/* Final responsive footer and tablet header QA pass.
-   Loaded after prior responsive overrides so these adjustments remain isolated and reversible. */
+/* Footer v2.0 — two-tier editorial footer.
+   Loaded after prior footer overrides so this layout remains isolated and reversible. */
 
 :root {
-  --footer-identity-rail-final: 160px;
-  --footer-social-group-final: 260px;
+  --footer-v2-social-pill: 122px;
+  --footer-v2-rule: rgba(255, 255, 255, 0.08);
 }
 
 /* Keep the tablet/mobile header fully pinned and visible at every scroll position. */
@@ -25,111 +25,290 @@
     min-height: 100%;
   }
 
-  /* Avoid tablet footer collisions with the copyright/action row. */
   .back-to-top {
     display: none;
   }
 }
 
-/* Desktop and tablet: optically align the CTA with the identity copy. */
+.site-footer {
+  padding-top: clamp(46px, 5vw, 66px);
+  padding-bottom: clamp(30px, 3.5vw, 44px);
+}
+
+.footer-grid {
+  margin-bottom: 0;
+}
+
+.footer-brand img,
+.footer-tagline,
+.footer-heading,
+.footer-links > nav,
+.footer-brand .footer-btn,
+.footer-socials,
+.footer-copyright {
+  min-width: 0;
+}
+
+.footer-brand img {
+  margin-bottom: 0;
+}
+
+.footer-brand .footer-btn {
+  margin-left: 0;
+}
+
+.footer-meta {
+  margin: 0;
+  padding: 0;
+}
+
 @media (min-width: 721px) {
   .footer-grid {
-    grid-template-columns: minmax(var(--footer-identity-rail-final), 0.7fr) minmax(0, 1.3fr);
-    column-gap: clamp(40px, 7vw, 104px);
-    row-gap: 14px;
+    display: grid;
+    grid-template-columns: minmax(160px, 0.68fr) minmax(226px, 1fr) minmax(150px, 0.76fr);
+    grid-template-rows: auto auto auto auto;
+    column-gap: clamp(28px, 4.4vw, 70px);
+    row-gap: 12px;
+    align-items: start;
+  }
+
+  .footer-brand,
+  .footer-links,
+  .footer-meta {
+    display: contents;
+  }
+
+  .footer-brand img {
+    grid-column: 1;
+    grid-row: 1;
+    align-self: start;
   }
 
   .footer-tagline {
-    width: var(--footer-identity-rail-final);
+    grid-column: 1;
+    grid-row: 2;
+    width: auto;
+    max-width: 190px;
+    margin-top: 10px;
+  }
+
+  .footer-heading {
+    grid-column: 2 / 4;
+    grid-row: 1;
+    margin: 0;
+  }
+
+  .footer-links > nav {
+    grid-column: 2 / 4;
+    grid-row: 2;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(155px, 220px));
+    gap: 10px clamp(28px, 5vw, 64px);
+    width: min(100%, 520px);
+    margin: 0;
+  }
+
+  .footer-grid::before {
+    content: "";
+    grid-column: 1 / -1;
+    grid-row: 3;
+    align-self: end;
+    width: 100%;
+    margin-top: clamp(18px, 2.5vw, 30px);
+    border-top: 1px solid var(--footer-v2-rule);
   }
 
   .footer-brand .footer-btn {
-    width: var(--footer-identity-rail-final);
-    max-width: var(--footer-identity-rail-final);
+    grid-column: 1;
+    grid-row: 4;
+    align-self: center;
     justify-self: start;
-    margin-left: 0;
+    width: min(100%, 176px);
+    max-width: 176px;
+    min-height: 44px;
+    height: 44px;
+    margin-top: 8px;
+    padding-inline: 14px;
+  }
+
+  .footer-socials {
+    grid-column: 2;
+    grid-row: 4;
+    align-self: center;
+    justify-self: start;
+    display: grid;
+    grid-template-columns: repeat(2, var(--footer-v2-social-pill));
+    gap: 12px;
+    width: auto;
+    margin-top: 8px;
+  }
+
+  .footer-socials .social-badge {
+    width: var(--footer-v2-social-pill);
+    min-width: var(--footer-v2-social-pill);
+    max-width: var(--footer-v2-social-pill);
+    margin: 0;
     padding-inline: 12px;
   }
 
-  .footer-meta {
-    gap: clamp(14px, 2vw, 24px);
-  }
-
   .footer-copyright {
-    font-size: 0.8rem;
+    grid-column: 3;
+    grid-row: 4;
+    align-self: center;
+    justify-self: end;
+    margin-top: 8px;
+    font-size: 0.78rem;
+    line-height: 1.35;
+    text-align: right;
+    white-space: nowrap;
   }
 }
 
-/* Tablet spacing: preserve a compact horizontal footer without crowding. */
 @media (min-width: 721px) and (max-width: 920px) {
+  :root {
+    --footer-v2-social-pill: 104px;
+  }
+
   .site-footer {
-    padding-top: 46px;
+    padding-top: 44px;
     padding-bottom: 30px;
   }
 
   .footer-grid {
-    column-gap: clamp(32px, 5vw, 48px);
-    row-gap: 16px;
+    grid-template-columns: minmax(144px, 0.7fr) minmax(220px, 1fr) minmax(142px, 0.72fr);
+    column-gap: clamp(20px, 3.2vw, 34px);
+    row-gap: 10px;
+  }
+
+  .footer-tagline {
+    max-width: 154px;
+    font-size: 0.96rem;
   }
 
   .footer-links > nav {
-    gap: 10px 20px;
+    grid-template-columns: repeat(2, minmax(135px, 1fr));
+    gap: 9px 22px;
+    width: 100%;
   }
 
-  .footer-meta {
-    gap: 14px;
-    padding-top: 18px;
+  .footer-brand .footer-btn {
+    width: 144px;
+    max-width: 144px;
+    padding-inline: 10px;
   }
 
-  .footer-copyright {
-    font-size: 0.74rem;
-  }
-}
-
-/* iPad Mini and similar compact tablets: pull the copyright slightly inward. */
-@media (min-width: 721px) and (max-width: 800px) {
-  .footer-meta {
+  .footer-socials {
     gap: 10px;
   }
 
   .footer-copyright {
-    margin-left: -6px;
+    font-size: 0.7rem;
   }
 }
 
-/* Mobile: keep both social badges on one intentional, evenly spaced row. */
 @media (max-width: 720px) {
+  :root {
+    --footer-v2-social-pill: 122px;
+  }
+
+  .site-footer {
+    padding-top: 36px;
+    padding-bottom: 28px;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto auto auto auto auto;
+    gap: 0;
+  }
+
+  .footer-brand,
+  .footer-links,
+  .footer-meta {
+    display: contents;
+  }
+
+  .footer-brand img {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .footer-tagline {
+    grid-column: 1;
+    grid-row: 2;
+    width: min(100%, 190px);
+    margin-top: 10px;
+  }
+
+  .footer-heading {
+    grid-column: 1;
+    grid-row: 3;
+    margin: 28px 0 16px;
+  }
+
+  .footer-links > nav {
+    grid-column: 1;
+    grid-row: 4;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    width: 100%;
+    margin: 0;
+  }
+
   .footer-brand .footer-btn {
+    grid-column: 1;
+    grid-row: 5;
+    justify-self: start;
     width: min(100%, 196px);
     max-width: 196px;
+    min-height: 44px;
+    height: 44px;
+    margin-top: 24px;
+    padding-inline: 16px;
+  }
+
+  .footer-grid::before {
+    content: "";
+    grid-column: 1;
+    grid-row: 6;
+    width: 100%;
+    margin-top: 16px;
+    border-top: 1px solid var(--footer-v2-rule);
   }
 
   .footer-socials {
-    display: flex !important;
-    flex-direction: row !important;
-    flex-wrap: nowrap !important;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    width: min(100%, var(--footer-social-group-final));
-    max-width: var(--footer-social-group-final);
+    grid-column: 1;
+    grid-row: 7;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, var(--footer-v2-social-pill)));
+    gap: 10px;
+    width: 100%;
+    margin-top: 16px;
   }
 
   .footer-socials .social-badge {
-    flex: 1 1 0 !important;
-    width: auto !important;
+    width: 100% !important;
     min-width: 0 !important;
-    max-width: none;
+    max-width: var(--footer-v2-social-pill);
     margin: 0;
+  }
+
+  .footer-copyright {
+    grid-column: 1;
+    grid-row: 8;
+    justify-self: start;
+    margin-top: 14px;
+    font-size: 0.76rem;
+    line-height: 1.4;
+    text-align: left;
+    white-space: normal;
   }
 }
 
 @media (max-width: 360px) {
   :root {
-    --footer-social-group-final: 244px;
-  }
-
-  .footer-socials {
-    gap: 10px;
+    --footer-v2-social-pill: 116px;
   }
 }
