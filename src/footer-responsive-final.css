@@ -37,6 +37,7 @@
 .site-footer .footer-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: auto;
   align-items: center;
   column-gap: clamp(28px, 5vw, 72px);
   row-gap: 0;
@@ -52,6 +53,7 @@
 
 .site-footer .footer-brand {
   grid-column: 1;
+  grid-row: 1;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
@@ -81,6 +83,7 @@
 
 .site-footer .footer-meta {
   grid-column: 2;
+  grid-row: 1;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
