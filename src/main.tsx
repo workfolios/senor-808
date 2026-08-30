@@ -15,6 +15,7 @@ import './catalog-refinement-v21.ts';
 import './selected-work-refinement.css';
 import './footer-signature-anchor.css';
 import './selected-work-refinement.ts';
+import './footer-v3-studio-close.ts';
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
