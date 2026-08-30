@@ -5,13 +5,13 @@ import path from 'node:path';
 const targetUrl = process.env.TARGET_URL || 'http://127.0.0.1:4173/';
 const outputDir = path.resolve('artifacts/gallery-refinement-qa');
 const viewports = [
-  { name: 'mobile-360', width: 360, height: 740, expectedColumns: 1, socialSize: 44, maxFooterHeight: 190, mobile: true },
-  { name: 'mobile-390', width: 390, height: 844, expectedColumns: 1, socialSize: 44, maxFooterHeight: 190, mobile: true },
-  { name: 'tablet-768', width: 768, height: 1024, expectedColumns: 3, socialSize: 44, maxFooterHeight: 150, mobile: false },
-  { name: 'tablet-820', width: 820, height: 1180, expectedColumns: 3, socialSize: 44, maxFooterHeight: 150, mobile: false },
-  { name: 'tablet-landscape-1024', width: 1024, height: 768, expectedColumns: 3, socialSize: 40, maxFooterHeight: 140, mobile: false },
-  { name: 'desktop-1280', width: 1280, height: 900, expectedColumns: 3, socialSize: 40, maxFooterHeight: 140, mobile: false },
-  { name: 'desktop-1440', width: 1440, height: 900, expectedColumns: 3, socialSize: 40, maxFooterHeight: 140, mobile: false },
+  { name: 'mobile-360', width: 360, height: 740, expectedColumns: 1, socialSize: 44, maxFooterHeight: 155, mobile: true },
+  { name: 'mobile-390', width: 390, height: 844, expectedColumns: 1, socialSize: 44, maxFooterHeight: 155, mobile: true },
+  { name: 'tablet-768', width: 768, height: 1024, expectedColumns: 2, socialSize: 44, maxFooterHeight: 125, mobile: false },
+  { name: 'tablet-820', width: 820, height: 1180, expectedColumns: 2, socialSize: 44, maxFooterHeight: 125, mobile: false },
+  { name: 'tablet-landscape-1024', width: 1024, height: 768, expectedColumns: 2, socialSize: 40, maxFooterHeight: 120, mobile: false },
+  { name: 'desktop-1280', width: 1280, height: 900, expectedColumns: 2, socialSize: 40, maxFooterHeight: 120, mobile: false },
+  { name: 'desktop-1440', width: 1440, height: 900, expectedColumns: 2, socialSize: 40, maxFooterHeight: 120, mobile: false },
 ];
 
 await fs.mkdir(outputDir, { recursive: true });
@@ -36,7 +36,7 @@ try {
 
     const footer = page.locator('.site-footer');
     await footer.scrollIntoViewIfNeeded();
-    await footer.screenshot({ path: path.join(outputDir, `${viewport.name}-footer-v4.png`) });
+    await footer.screenshot({ path: path.join(outputDir, `${viewport.name}-footer-v5.png`) });
 
     const metrics = await page.evaluate(() => {
       const footer = document.querySelector('.site-footer');
@@ -57,11 +57,15 @@ try {
       const footerRect = footer?.getBoundingClientRect();
       const gridRect = grid?.getBoundingClientRect();
       const brandRect = brand?.getBoundingClientRect();
+      const wordmarkRect = wordmark?.getBoundingClientRect();
+      const taglineRect = tagline?.getBoundingClientRect();
       const metaRect = meta?.getBoundingClientRect();
       const socialsRect = socials?.getBoundingClientRect();
       const copyrightRect = copyright?.getBoundingClientRect();
       const socialRects = socialBadges.map((element) => element.getBoundingClientRect());
       const gridStyle = grid ? getComputedStyle(grid) : null;
+      const brandStyle = brand ? getComputedStyle(brand) : null;
+      const metaStyle = meta ? getComputedStyle(meta) : null;
       const gridColumns = gridStyle?.gridTemplateColumns
         ? gridStyle.gridTemplateColumns.split(' ').filter(Boolean).length
         : 0;
@@ -86,16 +90,32 @@ try {
       const socialVisibleText = socialBadges.map((element) => element.textContent?.trim() || '');
       const socialTooltips = socialBadges.map((element) => element.getAttribute('data-tooltip') || '');
       const socialAriaLabels = socialBadges.map((element) => element.getAttribute('aria-label') || '');
+      const socialRestStyles = socialBadges.map((element) => {
+        const style = getComputedStyle(element);
+        return { borderColor: style.borderColor, backgroundColor: style.backgroundColor };
+      });
+      const isTransparent = (value) => value === 'transparent' || value === 'rgba(0, 0, 0, 0)';
+      const socialsBareAtRest = socialRestStyles.every((style) => isTransparent(style.borderColor) && isTransparent(style.backgroundColor));
       const socialRowAligned = socialRects.length === 2 && Math.abs(socialRects[0].top - socialRects[1].top) <= 2;
-      const copyrightRightAligned = Boolean(gridRect && copyrightRect && Math.abs(gridRect.right - copyrightRect.right) <= 3);
-      const desktopSingleRowAligned = Boolean(brandRect && socialsRect && copyrightRect && Math.max(
-        Math.abs((brandRect.top + brandRect.height / 2) - (socialsRect.top + socialsRect.height / 2)),
-        Math.abs((brandRect.top + brandRect.height / 2) - (copyrightRect.top + copyrightRect.height / 2))
-      ) <= 18);
+
+      const identityInlineLockup = Boolean(
+        brandStyle?.display === 'flex' && wordmarkRect && taglineRect &&
+        taglineRect.left > wordmarkRect.right &&
+        taglineRect.left - wordmarkRect.right >= 6 &&
+        taglineRect.left - wordmarkRect.right <= 24 &&
+        Math.abs((wordmarkRect.top + wordmarkRect.height / 2) - (taglineRect.top + taglineRect.height / 2)) <= 12
+      );
+      const utilityClusterAligned = Boolean(
+        metaStyle?.display === 'flex' && socialsRect && copyrightRect &&
+        socialsRect.right < copyrightRect.left &&
+        Math.abs((socialsRect.top + socialsRect.height / 2) - (copyrightRect.top + copyrightRect.height / 2)) <= 10
+      );
+      const copyrightAnchorsRight = Boolean(gridRect && copyrightRect && Math.abs(gridRect.right - copyrightRect.right) <= 3);
+      const desktopTwoAnchorRow = Boolean(brandRect && metaRect && Math.abs(
+        (brandRect.top + brandRect.height / 2) - (metaRect.top + metaRect.height / 2)
+      ) <= 14);
       const mobileOrder = Boolean(brandRect && metaRect && brandRect.bottom < metaRect.top);
-      const mobileMetaAligned = Boolean(socialsRect && copyrightRect && Math.abs(
-        (socialsRect.top + socialsRect.height / 2) - (copyrightRect.top + copyrightRect.height / 2)
-      ) <= 10);
+      const noUtilityDivider = Boolean(!metaStyle || parseFloat(metaStyle.borderTopWidth || '0') === 0);
 
       return {
         pageOverflow: document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
@@ -110,16 +130,19 @@ try {
         contentInsideFooter,
         wordmarkIsApprovedWhiteAsset: Boolean(wordmark?.getAttribute('src')?.includes('Senor808_Wordmark_Primary_White.svg')),
         taglineUsesAccent2: taglineColor === accent2Computed,
+        identityInlineLockup,
+        utilityClusterAligned,
+        copyrightAnchorsRight,
+        desktopTwoAnchorRow,
+        mobileOrder,
+        noUtilityDivider,
         socialCount: socialBadges.length,
         socialSizes,
         socialVisibleText,
         socialTooltips,
         socialAriaLabels,
+        socialsBareAtRest,
         socialRowAligned,
-        copyrightRightAligned,
-        desktopSingleRowAligned,
-        mobileOrder,
-        mobileMetaAligned,
         imageFailureCount: imagesFailed.length,
       };
     });
@@ -134,9 +157,13 @@ try {
 
     const firstSocial = page.locator('.site-footer .footer-socials .social-badge').first();
     await firstSocial.hover();
-    const tooltipVisibleOnHover = await firstSocial.evaluate((element) => {
-      const style = getComputedStyle(element, '::after');
-      return style.opacity === '1' && style.visibility === 'visible';
+    const hoverState = await firstSocial.evaluate((element) => {
+      const style = getComputedStyle(element);
+      const tooltip = getComputedStyle(element, '::after');
+      return {
+        tooltipVisible: tooltip.opacity === '1' && tooltip.visibility === 'visible',
+        visualTreatmentAppears: style.borderColor !== 'rgba(0, 0, 0, 0)' || style.backgroundColor !== 'rgba(0, 0, 0, 0)',
+      };
     });
 
     const checks = [
@@ -145,25 +172,28 @@ try {
       ['footer footprint stays compact', metrics.footerHeight <= viewport.maxFooterHeight],
       ['footer emblem absent', metrics.emblemAbsent],
       ['duplicated Explore navigation remains removed', metrics.footerNavigationAbsent && metrics.exploreHeadingAbsent],
-      ['footer CTA buttons are absent', metrics.footerCtasAbsent],
-      ['Footer v4 minimal sign-off initialized', metrics.footerMinimalSignoffReady],
-      ['footer uses governed v4 column count', metrics.gridColumns === viewport.expectedColumns],
+      ['footer CTA buttons remain absent', metrics.footerCtasAbsent],
+      ['minimal sign-off behavior remains initialized', metrics.footerMinimalSignoffReady],
+      ['footer uses governed v5 column count', metrics.gridColumns === viewport.expectedColumns],
       ['footer content remains contained', metrics.contentInsideFooter],
       ['approved white Señor 808 wordmark remains in use', metrics.wordmarkIsApprovedWhiteAsset],
       ['descriptor uses bright pink accent token', metrics.taglineUsesAccent2],
+      ['wordmark and descriptor form one inline identity lockup', metrics.identityInlineLockup],
+      ['social controls and copyright form one utility cluster', metrics.utilityClusterAligned],
+      ['copyright anchors the right edge', metrics.copyrightAnchorsRight],
+      ['utility cluster has no internal divider', metrics.noUtilityDivider],
       ['social controls are icon-only with accessible names and tooltip labels', iconOnlyContractCorrect],
       ['social controls use governed responsive dimensions', socialSizesCorrect],
+      ['social controls are visually bare at rest', metrics.socialsBareAtRest],
       ['social controls stay on one row', metrics.socialRowAligned],
-      ['social tooltip appears on hover', tooltipVisibleOnHover],
+      ['social hover treatment and tooltip appear intentionally', hoverState.tooltipVisible && hoverState.visualTreatmentAppears],
       ['all site images loaded', metrics.imageFailureCount === 0],
     ];
 
     if (viewport.mobile) {
-      checks.push(['mobile footer reads identity then utility row', metrics.mobileOrder]);
-      checks.push(['mobile social/copyright utility row aligns', metrics.mobileMetaAligned]);
+      checks.push(['mobile reads identity lockup then utility cluster', metrics.mobileOrder]);
     } else {
-      checks.push(['identity, socials, and copyright form one optical row', metrics.desktopSingleRowAligned]);
-      checks.push(['copyright anchors to right edge', metrics.copyrightRightAligned]);
+      checks.push(['desktop/tablet form one two-anchor optical row', metrics.desktopTwoAnchorRow]);
     }
 
     checks.filter(([, passed]) => !passed).forEach(([label]) => failures.push(`${viewport.name}: ${label}`));
@@ -174,11 +204,11 @@ try {
   await browser.close();
 }
 
-await fs.writeFile(path.join(outputDir, 'footer-v4-findings.json'), JSON.stringify(findings, null, 2), 'utf8');
+await fs.writeFile(path.join(outputDir, 'footer-v5-findings.json'), JSON.stringify(findings, null, 2), 'utf8');
 await fs.writeFile(
-  path.join(outputDir, 'FOOTER-V4-README.md'),
-  `# Señor 808 Footer v4.0 Minimal Studio Sign-Off QA\n\nTarget: ${targetUrl}\n\nResult: ${failures.length === 0 ? 'PASS' : 'FAIL'}\n${failures.map((failure) => `- ${failure}`).join('\n')}\n`,
+  path.join(outputDir, 'FOOTER-V5-README.md'),
+  `# Señor 808 Footer v5.0 Signature Lockup QA\n\nTarget: ${targetUrl}\n\nResult: ${failures.length === 0 ? 'PASS' : 'FAIL'}\n${failures.map((failure) => `- ${failure}`).join('\n')}\n`,
   'utf8',
 );
 
-if (failures.length > 0) throw new Error(`Footer v4.0 QA failed:\n${failures.join('\n')}`);
+if (failures.length > 0) throw new Error(`Footer v5.0 QA failed:\n${failures.join('\n')}`);
